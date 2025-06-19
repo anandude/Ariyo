@@ -5,17 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Edit3, Save, Plus, X, Calendar, MapPin, Utensils, Users, Heart, Home } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-interface Person {
-  id: string;
-  name: string;
-  category: string;
-  birthday?: string;
-  location?: string;
-  favoriteFood?: string;
-  customFields?: Record<string, string>;
-}
+import { Person } from "@/hooks/usePeople";
 
 interface PersonProfileProps {
   person: Person;
@@ -62,8 +52,8 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
     if (newFieldKey.trim() && newFieldValue.trim()) {
       setEditedPerson({
         ...editedPerson,
-        customFields: {
-          ...editedPerson.customFields,
+        custom_fields: {
+          ...editedPerson.custom_fields,
           [newFieldKey.trim()]: newFieldValue.trim()
         }
       });
@@ -74,11 +64,11 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
   };
 
   const removeCustomField = (key: string) => {
-    const newCustomFields = { ...editedPerson.customFields };
+    const newCustomFields = { ...editedPerson.custom_fields };
     delete newCustomFields[key];
     setEditedPerson({
       ...editedPerson,
-      customFields: newCustomFields
+      custom_fields: newCustomFields
     });
   };
 
@@ -203,14 +193,14 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                 </Label>
                 {isEditing ? (
                   <Input
-                    value={editedPerson.favoriteFood || ""}
-                    onChange={(e) => setEditedPerson({ ...editedPerson, favoriteFood: e.target.value })}
+                    value={editedPerson.favorite_food || ""}
+                    onChange={(e) => setEditedPerson({ ...editedPerson, favorite_food: e.target.value })}
                     placeholder="Their favorite food"
                     className="mt-1 rounded-xl"
                   />
                 ) : (
                   <p className="text-gray-600 mt-1 p-3 bg-gray-50 rounded-xl">
-                    {person.favoriteFood || "Not set"}
+                    {person.favorite_food || "Not set"}
                   </p>
                 )}
               </div>
@@ -237,7 +227,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {Object.entries(editedPerson.customFields || {}).map(([key, value]) => (
+            {Object.entries(editedPerson.custom_fields || {}).map(([key, value]) => (
               <div key={key}>
                 <div className="flex items-center justify-between">
                   <Label className="text-sm font-medium text-gray-700">{key}</Label>
@@ -257,8 +247,8 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                     value={value}
                     onChange={(e) => setEditedPerson({
                       ...editedPerson,
-                      customFields: {
-                        ...editedPerson.customFields,
+                      custom_fields: {
+                        ...editedPerson.custom_fields,
                         [key]: e.target.value
                       }
                     })}
@@ -308,7 +298,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
               </div>
             )}
 
-            {Object.keys(editedPerson.customFields || {}).length === 0 && !showAddField && (
+            {Object.keys(editedPerson.custom_fields || {}).length === 0 && !showAddField && (
               <p className="text-gray-500 text-center py-4">
                 {isEditing ? "Click 'Add Field' to add custom details" : "No additional details yet"}
               </p>
