@@ -42,7 +42,12 @@ export const usePeople = () => {
           variant: "destructive",
         });
       } else {
-        setPeople(data || []);
+        // Convert the database records to our Person type
+        const convertedPeople: Person[] = (data || []).map(person => ({
+          ...person,
+          custom_fields: person.custom_fields as Record<string, string> || {}
+        }));
+        setPeople(convertedPeople);
       }
     } catch (error) {
       console.error('Error fetching people:', error);
@@ -78,12 +83,18 @@ export const usePeople = () => {
         return null;
       }
 
-      setPeople(prev => [data, ...prev]);
+      // Convert the database record to our Person type
+      const convertedPerson: Person = {
+        ...data,
+        custom_fields: data.custom_fields as Record<string, string> || {}
+      };
+
+      setPeople(prev => [convertedPerson, ...prev]);
       toast({
         title: "Success",
         description: `${personData.name} has been added to your people.`,
       });
-      return data;
+      return convertedPerson;
     } catch (error) {
       console.error('Error adding person:', error);
       return null;
@@ -115,14 +126,20 @@ export const usePeople = () => {
         return null;
       }
 
+      // Convert the database record to our Person type
+      const convertedPerson: Person = {
+        ...data,
+        custom_fields: data.custom_fields as Record<string, string> || {}
+      };
+
       setPeople(prev => 
-        prev.map(person => person.id === id ? data : person)
+        prev.map(person => person.id === id ? convertedPerson : person)
       );
       toast({
         title: "Success",
         description: "Person updated successfully.",
       });
-      return data;
+      return convertedPerson;
     } catch (error) {
       console.error('Error updating person:', error);
       return null;
