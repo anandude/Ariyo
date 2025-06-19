@@ -1,55 +1,18 @@
+
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Users, Heart, Home as HomeIcon } from "lucide-react";
+import { Plus, Users, Heart, Home as HomeIcon, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import { usePeople, Person } from "@/hooks/usePeople";
 import AddPersonModal from "@/components/AddPersonModal";
 import PersonCard from "@/components/PersonCard";
 import PersonProfile from "@/components/PersonProfile";
 
-interface Person {
-  id: string;
-  name: string;
-  category: string;
-  birthday?: string;
-  location?: string;
-  favoriteFood?: string;
-  customFields?: Record<string, string>;
-}
-
-// Mock data for demonstration
-const mockPeople: Person[] = [
-  {
-    id: "1",
-    name: "Sarah Johnson",
-    category: "Friends",
-    birthday: "1990-05-15",
-    location: "San Francisco, CA",
-    favoriteFood: "Sushi",
-    customFields: { "Where We Met": "College", "Favorite Movie": "Inception" }
-  },
-  {
-    id: "2", 
-    name: "Mom",
-    category: "Family",
-    birthday: "1965-08-22",
-    location: "Portland, OR",
-    favoriteFood: "Pasta",
-    customFields: { "Anniversary": "June 12th" }
-  },
-  {
-    id: "3",
-    name: "Alex Chen",
-    category: "Acquaintances", 
-    birthday: "1988-12-03",
-    location: "New York, NY",
-    favoriteFood: "Pizza",
-    customFields: { "Company": "Tech Corp", "Hobby": "Photography" }
-  }
-];
-
 const Index = () => {
-  const [people, setPeople] = useState<Person[]>(mockPeople);
+  const { user, signOut } = useAuth();
+  const { people, loading, addPerson, updatePerson } = usePeople();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
@@ -69,14 +32,22 @@ const Index = () => {
     }
   };
 
-  const addPerson = (newPerson: { name: string; category: string }) => {
-    const person: Person = {
-      id: Date.now().toString(),
-      name: newPerson.name,
-      category: newPerson.category,
-      customFields: {}
-    };
-    setPeople([...people, person]);
+  const handleAddPerson = async (newPerson: { name: string; category: string }) => {
+    const result = await addPerson(newPerson);
+    if (result) {
+      setShowAddModal(false);
+    }
+  };
+
+  const handleUpdatePerson = async (updatedPerson: Person) => {
+    const result = await updatePerson(updatedPerson.id, updatedPerson);
+    if (result) {
+      setSelectedPerson(result);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
   };
 
   if (selectedPerson) {
@@ -84,10 +55,7 @@ const Index = () => {
       <PersonProfile 
         person={selectedPerson} 
         onBack={() => setSelectedPerson(null)}
-        onUpdate={(updatedPerson: Person) => {
-          setPeople(people.map(p => p.id === updatedPerson.id ? updatedPerson : p));
-          setSelectedPerson(updatedPerson);
-        }}
+        onUpdate={handleUpdatePerson}
       />
     );
   }
@@ -95,10 +63,27 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       <div className="container mx-auto px-4 py-6 max-w-4xl">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">My People</h1>
-          <p className="text-gray-600">Remember the special people in your life</p>
+        {/* Header with user info and sign out */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="text-center flex-1">
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">My People</h1>
+            <p className="text-gray-600">Remember the special people in your life</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <User size={16} />
+              {user?.email}
+            </div>
+            <Button
+              onClick={handleSignOut}
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <LogOut size={16} />
+              Sign Out
+            </Button>
+          </div>
         </div>
 
         {/* Category Filters */}
@@ -137,18 +122,27 @@ const Index = () => {
           </Button>
         </div>
 
-        {/* People Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredPeople.map((person) => (
-            <PersonCard
-              key={person.id}
-              person={person}
-              onClick={() => setSelectedPerson(person)}
-            />
-          ))}
-        </div>
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="text-gray-600">Loading your people...</div>
+          </div>
+        )}
 
-        {filteredPeople.length === 0 && (
+        {/* People Grid */}
+        {!loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredPeople.map((person) => (
+              <PersonCard
+                key={person.id}
+                person={person}
+                onClick={() => setSelectedPerson(person)}
+              />
+            ))}
+          </div>
+        )}
+
+        {!loading && filteredPeople.length === 0 && (
           <div className="text-center py-12">
             <div className="text-gray-400 mb-4">
               <Users size={48} className="mx-auto" />
@@ -168,7 +162,7 @@ const Index = () => {
         <AddPersonModal
           isOpen={showAddModal}
           onClose={() => setShowAddModal(false)}
-          onAdd={addPerson}
+          onAdd={handleAddPerson}
         />
       </div>
     </div>

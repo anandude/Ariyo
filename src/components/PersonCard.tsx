@@ -1,16 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Heart, Home, MapPin, Calendar, Utensils } from "lucide-react";
-
-interface Person {
-  id: string;
-  name: string;
-  category: string;
-  birthday?: string;
-  location?: string;
-  favoriteFood?: string;
-  customFields?: Record<string, string>;
-}
+import { Person } from "@/hooks/usePeople";
 
 interface PersonCardProps {
   person: Person;
@@ -70,18 +61,18 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
               <span>{person.location}</span>
             </div>
           )}
-          {person.favoriteFood && (
+          {person.favorite_food && (
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Utensils size={14} />
-              <span>{person.favoriteFood}</span>
+              <span>{person.favorite_food}</span>
             </div>
           )}
         </div>
 
-        {Object.keys(person.customFields || {}).length > 0 && (
+        {Object.keys(person.custom_fields || {}).length > 0 && (
           <div className="mt-3 pt-3 border-t border-gray-100">
             <div className="text-xs text-gray-500">
-              +{Object.keys(person.customFields || {}).length} more details
+              +{Object.keys(person.custom_fields || {}).length} more details
             </div>
           </div>
         )}
