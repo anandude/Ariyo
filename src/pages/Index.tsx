@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,8 +7,18 @@ import AddPersonModal from "@/components/AddPersonModal";
 import PersonCard from "@/components/PersonCard";
 import PersonProfile from "@/components/PersonProfile";
 
+interface Person {
+  id: string;
+  name: string;
+  category: string;
+  birthday?: string;
+  location?: string;
+  favoriteFood?: string;
+  customFields?: Record<string, string>;
+}
+
 // Mock data for demonstration
-const mockPeople = [
+const mockPeople: Person[] = [
   {
     id: "1",
     name: "Sarah Johnson",
@@ -40,10 +49,10 @@ const mockPeople = [
 ];
 
 const Index = () => {
-  const [people, setPeople] = useState(mockPeople);
+  const [people, setPeople] = useState<Person[]>(mockPeople);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
 
   const categories = ["All", "Friends", "Family", "Acquaintances"];
 
@@ -51,7 +60,7 @@ const Index = () => {
     ? people 
     : people.filter(person => person.category === selectedCategory);
 
-  const getCategoryIcon = (category) => {
+  const getCategoryIcon = (category: string) => {
     switch (category) {
       case "Friends": return Users;
       case "Family": return Heart;
@@ -60,13 +69,11 @@ const Index = () => {
     }
   };
 
-  const addPerson = (newPerson) => {
-    const person = {
-      ...newPerson,
+  const addPerson = (newPerson: { name: string; category: string }) => {
+    const person: Person = {
       id: Date.now().toString(),
-      birthday: "",
-      location: "",
-      favoriteFood: "",
+      name: newPerson.name,
+      category: newPerson.category,
       customFields: {}
     };
     setPeople([...people, person]);
@@ -77,7 +84,7 @@ const Index = () => {
       <PersonProfile 
         person={selectedPerson} 
         onBack={() => setSelectedPerson(null)}
-        onUpdate={(updatedPerson) => {
+        onUpdate={(updatedPerson: Person) => {
           setPeople(people.map(p => p.id === updatedPerson.id ? updatedPerson : p));
           setSelectedPerson(updatedPerson);
         }}
