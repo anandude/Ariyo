@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Heart, Home, MapPin, Calendar, MessageCircle, Avatar } from "lucide-react";
+import { Users, Heart, Home, MapPin, Calendar, MessageCircle } from "lucide-react";
 import { Person } from "@/hooks/usePeople";
 
 interface PersonCardProps {
