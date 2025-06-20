@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Heart, Home, MapPin, Calendar, Utensils } from "lucide-react";
+import { Users, Heart, Home, MapPin, Calendar, MessageCircle, Avatar } from "lucide-react";
 import { Person } from "@/hooks/usePeople";
 
 interface PersonCardProps {
@@ -43,8 +43,18 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
               {person.category}
             </div>
           </div>
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-            {person.name.charAt(0)}
+          <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden">
+            {person.image_url ? (
+              <img 
+                src={person.image_url} 
+                alt={person.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+                {person.name.charAt(0)}
+              </div>
+            )}
           </div>
         </div>
 
@@ -61,10 +71,10 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
               <span>{person.location}</span>
             </div>
           )}
-          {person.favorite_food && (
+          {person.how_we_met && (
             <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Utensils size={14} />
-              <span>{person.favorite_food}</span>
+              <MessageCircle size={14} />
+              <span>{person.how_we_met}</span>
             </div>
           )}
         </div>

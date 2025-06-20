@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Edit3, Save, Plus, X, Calendar, MapPin, Utensils, Users, Heart, Home } from "lucide-react";
+import { ArrowLeft, Edit3, Save, Plus, X, Calendar, MapPin, MessageCircle, Users, Heart, Home, Upload } from "lucide-react";
 import { Person } from "@/hooks/usePeople";
 
 interface PersonProfileProps {
@@ -120,8 +120,18 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
         <Card className="mb-6 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
-                {person.name.charAt(0)}
+              <div className="w-20 h-20 rounded-full overflow-hidden">
+                {person.image_url ? (
+                  <img 
+                    src={person.image_url} 
+                    alt={person.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-2xl">
+                    {person.name.charAt(0)}
+                  </div>
+                )}
               </div>
               <div className="flex-1">
                 <h1 className="text-2xl font-bold text-gray-800 mb-2">{person.name}</h1>
@@ -131,6 +141,20 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                 </div>
               </div>
             </div>
+            {isEditing && (
+              <div className="mt-4">
+                <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <Upload size={16} />
+                  Profile Image URL
+                </Label>
+                <Input
+                  value={editedPerson.image_url || ""}
+                  onChange={(e) => setEditedPerson({ ...editedPerson, image_url: e.target.value })}
+                  placeholder="Enter image URL"
+                  className="mt-1 rounded-xl"
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -188,19 +212,19 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
 
               <div>
                 <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <Utensils size={16} />
-                  Favorite Food
+                  <MessageCircle size={16} />
+                  How We Met
                 </Label>
                 {isEditing ? (
                   <Input
-                    value={editedPerson.favorite_food || ""}
-                    onChange={(e) => setEditedPerson({ ...editedPerson, favorite_food: e.target.value })}
-                    placeholder="Their favorite food"
+                    value={editedPerson.how_we_met || ""}
+                    onChange={(e) => setEditedPerson({ ...editedPerson, how_we_met: e.target.value })}
+                    placeholder="How did you meet this person?"
                     className="mt-1 rounded-xl"
                   />
                 ) : (
                   <p className="text-gray-600 mt-1 p-3 bg-gray-50 rounded-xl">
-                    {person.favorite_food || "Not set"}
+                    {person.how_we_met || "Not set"}
                   </p>
                 )}
               </div>
@@ -265,7 +289,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                 <Input
                   value={newFieldKey}
                   onChange={(e) => setNewFieldKey(e.target.value)}
-                  placeholder="Field name (e.g., 'Hobby', 'Where We Met')"
+                  placeholder="Field name (e.g., 'Hobby', 'Shared Interest')"
                   className="rounded-xl"
                 />
                 <Input

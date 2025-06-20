@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,7 +26,7 @@ const Index = () => {
       person.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       person.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (person.location && person.location.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (person.favorite_food && person.favorite_food.toLowerCase().includes(searchTerm.toLowerCase()));
+      (person.how_we_met && person.how_we_met.toLowerCase().includes(searchTerm.toLowerCase()));
     
     return matchesCategory && matchesSearch;
   });
@@ -41,7 +40,7 @@ const Index = () => {
     }
   };
 
-  const handleAddPerson = async (newPerson: { name: string; category: string }) => {
+  const handleAddPerson = async (newPerson: { name: string; category: string; image_url?: string }) => {
     const result = await addPerson(newPerson);
     if (result) {
       setShowAddModal(false);

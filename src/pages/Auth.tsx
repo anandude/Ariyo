@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -79,7 +78,7 @@ const Auth = () => {
               <Users className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome to My People</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome to Ariyo</h1>
           <p className="text-gray-600">Sign in to remember the special people in your life</p>
         </div>
 
