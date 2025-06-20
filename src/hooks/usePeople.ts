@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -10,7 +9,8 @@ export interface Person {
   category: string;
   birthday?: string;
   location?: string;
-  favorite_food?: string;
+  how_we_met?: string;
+  image_url?: string;
   custom_fields?: Record<string, string>;
   created_at?: string;
   updated_at?: string;
@@ -56,7 +56,7 @@ export const usePeople = () => {
     }
   };
 
-  const addPerson = async (personData: { name: string; category: string }) => {
+  const addPerson = async (personData: { name: string; category: string; image_url?: string }) => {
     if (!user) return null;
 
     try {
@@ -66,6 +66,7 @@ export const usePeople = () => {
           {
             name: personData.name,
             category: personData.category,
+            image_url: personData.image_url,
             user_id: user.id,
             custom_fields: {}
           }
