@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Edit3, Save, Plus, X, Calendar, MapPin, MessageCircle, Users, Heart, Home, Upload } from "lucide-react";
-import { Person } from "@/hooks/usePeople";
+import { ArrowLeft, Edit3, Save, Plus, X, Calendar, MapPin, MessageCircle, Users, Heart, Home, Upload, CalendarPlus } from "lucide-react";
+import { Person, Plan } from "@/hooks/usePeople";
 
 interface PersonProfileProps {
   person: Person;
@@ -19,6 +19,9 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
   const [newFieldKey, setNewFieldKey] = useState("");
   const [newFieldValue, setNewFieldValue] = useState("");
   const [showAddField, setShowAddField] = useState(false);
+  const [newPlanDescription, setNewPlanDescription] = useState("");
+  const [newPlanDate, setNewPlanDate] = useState("");
+  const [showAddPlan, setShowAddPlan] = useState(false);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -69,6 +72,39 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
     setEditedPerson({
       ...editedPerson,
       custom_fields: newCustomFields
+    });
+  };
+
+  const addPlan = () => {
+    if (newPlanDescription.trim() && newPlanDate.trim()) {
+      const newPlan: Plan = {
+        id: Date.now().toString(),
+        description: newPlanDescription.trim(),
+        date: newPlanDate
+      };
+      setEditedPerson({
+        ...editedPerson,
+        plans_made: [...(editedPerson.plans_made || []), newPlan]
+      });
+      setNewPlanDescription("");
+      setNewPlanDate("");
+      setShowAddPlan(false);
+    }
+  };
+
+  const removePlan = (planId: string) => {
+    setEditedPerson({
+      ...editedPerson,
+      plans_made: (editedPerson.plans_made || []).filter(plan => plan.id !== planId)
+    });
+  };
+
+  const updatePlan = (planId: string, field: keyof Plan, value: string) => {
+    setEditedPerson({
+      ...editedPerson,
+      plans_made: (editedPerson.plans_made || []).map(plan =>
+        plan.id === planId ? { ...plan, [field]: value } : plan
+      )
     });
   };
 
@@ -229,6 +265,125 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                 )}
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Plans Made */}
+        <Card className="mb-6 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <CalendarPlus size={20} />
+                Plans Made
+              </CardTitle>
+              {isEditing && (
+                <Button
+                  onClick={() => setShowAddPlan(true)}
+                  size="sm"
+                  variant="outline"
+                  className="rounded-xl"
+                >
+                  <Plus size={16} className="mr-1" />
+                  Add Plan
+                </Button>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {(editedPerson.plans_made || []).map((plan) => (
+              <div key={plan.id} className="p-3 bg-gray-50 rounded-xl">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 space-y-2">
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700">Plan Description</Label>
+                      {isEditing ? (
+                        <Input
+                          value={plan.description}
+                          onChange={(e) => updatePlan(plan.id, 'description', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-600 mt-1">{plan.description}</p>
+                      )}
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700">Date</Label>
+                      {isEditing ? (
+                        <Input
+                          type="date"
+                          value={plan.date}
+                          onChange={(e) => updatePlan(plan.id, 'date', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-600 mt-1">
+                          {plan.date ? new Date(plan.date).toLocaleDateString('en-US', { 
+                            weekday: 'long', 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          }) : "No date set"}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {isEditing && (
+                    <Button
+                      onClick={() => removePlan(plan.id)}
+                      size="sm"
+                      variant="ghost"
+                      className="text-red-500 hover:text-red-700 h-6 w-6 p-0 ml-2"
+                    >
+                      <X size={14} />
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {showAddPlan && isEditing && (
+              <div className="p-4 bg-blue-50 rounded-xl space-y-3">
+                <Input
+                  value={newPlanDescription}
+                  onChange={(e) => setNewPlanDescription(e.target.value)}
+                  placeholder="Plan description (e.g., 'Coffee at Central Park')"
+                  className="rounded-xl"
+                />
+                <Input
+                  type="date"
+                  value={newPlanDate}
+                  onChange={(e) => setNewPlanDate(e.target.value)}
+                  className="rounded-xl"
+                />
+                <div className="flex gap-2">
+                  <Button
+                    onClick={addPlan}
+                    size="sm"
+                    className="bg-blue-500 hover:bg-blue-600 rounded-xl"
+                  >
+                    Add Plan
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setShowAddPlan(false);
+                      setNewPlanDescription("");
+                      setNewPlanDate("");
+                    }}
+                    size="sm"
+                    variant="outline"
+                    className="rounded-xl"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {(editedPerson.plans_made || []).length === 0 && !showAddPlan && (
+              <p className="text-gray-500 text-center py-4">
+                {isEditing ? "Click 'Add Plan' to add upcoming plans" : "No plans made yet"}
+              </p>
+            )}
           </CardContent>
         </Card>
 

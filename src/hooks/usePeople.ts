@@ -1,7 +1,14 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
+
+export interface Plan {
+  id: string;
+  description: string;
+  date: string;
+}
 
 export interface Person {
   id: string;
@@ -12,6 +19,7 @@ export interface Person {
   how_we_met?: string;
   image_url?: string;
   custom_fields?: Record<string, string>;
+  plans_made?: Plan[];
   created_at?: string;
   updated_at?: string;
 }
@@ -45,7 +53,8 @@ export const usePeople = () => {
         // Convert the database records to our Person type
         const convertedPeople: Person[] = (data || []).map(person => ({
           ...person,
-          custom_fields: person.custom_fields as Record<string, string> || {}
+          custom_fields: person.custom_fields as Record<string, string> || {},
+          plans_made: person.plans_made as Plan[] || []
         }));
         setPeople(convertedPeople);
       }
@@ -68,7 +77,8 @@ export const usePeople = () => {
             category: personData.category,
             image_url: personData.image_url,
             user_id: user.id,
-            custom_fields: {}
+            custom_fields: {},
+            plans_made: []
           }
         ])
         .select()
@@ -87,7 +97,8 @@ export const usePeople = () => {
       // Convert the database record to our Person type
       const convertedPerson: Person = {
         ...data,
-        custom_fields: data.custom_fields as Record<string, string> || {}
+        custom_fields: data.custom_fields as Record<string, string> || {},
+        plans_made: data.plans_made as Plan[] || []
       };
 
       setPeople(prev => [convertedPerson, ...prev]);
@@ -130,7 +141,8 @@ export const usePeople = () => {
       // Convert the database record to our Person type
       const convertedPerson: Person = {
         ...data,
-        custom_fields: data.custom_fields as Record<string, string> || {}
+        custom_fields: data.custom_fields as Record<string, string> || {},
+        plans_made: data.plans_made as Plan[] || []
       };
 
       setPeople(prev => 

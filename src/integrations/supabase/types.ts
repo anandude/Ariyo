@@ -19,6 +19,7 @@ export type Database = {
           id: string
           location: string | null
           name: string
+          plans_made: Json | null
           updated_at: string
           user_id: string
         }
@@ -31,6 +32,7 @@ export type Database = {
           id?: string
           location?: string | null
           name: string
+          plans_made?: Json | null
           updated_at?: string
           user_id: string
         }
@@ -43,6 +45,7 @@ export type Database = {
           id?: string
           location?: string | null
           name?: string
+          plans_made?: Json | null
           updated_at?: string
           user_id?: string
         }
