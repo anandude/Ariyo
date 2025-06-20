@@ -24,6 +24,28 @@ export interface Person {
   updated_at?: string;
 }
 
+// Helper function to safely convert Json to Plan[]
+const convertJsonToPlans = (jsonData: any): Plan[] => {
+  if (!jsonData || !Array.isArray(jsonData)) {
+    return [];
+  }
+  
+  return jsonData.map((item: any) => ({
+    id: item.id || '',
+    description: item.description || '',
+    date: item.date || ''
+  }));
+};
+
+// Helper function to convert Plan[] to Json
+const convertPlansToJson = (plans: Plan[]): any => {
+  return plans.map(plan => ({
+    id: plan.id,
+    description: plan.description,
+    date: plan.date
+  }));
+};
+
 export const usePeople = () => {
   const [people, setPeople] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,7 +76,7 @@ export const usePeople = () => {
         const convertedPeople: Person[] = (data || []).map(person => ({
           ...person,
           custom_fields: person.custom_fields as Record<string, string> || {},
-          plans_made: person.plans_made as Plan[] || []
+          plans_made: convertJsonToPlans(person.plans_made)
         }));
         setPeople(convertedPeople);
       }
@@ -98,7 +120,7 @@ export const usePeople = () => {
       const convertedPerson: Person = {
         ...data,
         custom_fields: data.custom_fields as Record<string, string> || {},
-        plans_made: data.plans_made as Plan[] || []
+        plans_made: convertJsonToPlans(data.plans_made)
       };
 
       setPeople(prev => [convertedPerson, ...prev]);
@@ -117,12 +139,16 @@ export const usePeople = () => {
     if (!user) return null;
 
     try {
+      // Convert plans_made to Json format for database storage
+      const dbUpdates = {
+        ...updates,
+        updated_at: new Date().toISOString(),
+        plans_made: updates.plans_made ? convertPlansToJson(updates.plans_made) : undefined
+      };
+
       const { data, error } = await supabase
         .from('people')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString()
-        })
+        .update(dbUpdates)
         .eq('id', id)
         .eq('user_id', user.id)
         .select()
@@ -142,7 +168,7 @@ export const usePeople = () => {
       const convertedPerson: Person = {
         ...data,
         custom_fields: data.custom_fields as Record<string, string> || {},
-        plans_made: data.plans_made as Plan[] || []
+        plans_made: convertJsonToPlans(data.plans_made)
       };
 
       setPeople(prev => 
