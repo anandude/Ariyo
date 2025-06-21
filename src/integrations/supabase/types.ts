@@ -16,6 +16,7 @@ export type Database = {
           created_at: string
           custom_fields: Json | null
           favorite_food: string | null
+          how_we_met: string | null
           id: string
           location: string | null
           name: string
@@ -29,6 +30,7 @@ export type Database = {
           created_at?: string
           custom_fields?: Json | null
           favorite_food?: string | null
+          how_we_met?: string | null
           id?: string
           location?: string | null
           name: string
@@ -42,6 +44,7 @@ export type Database = {
           created_at?: string
           custom_fields?: Json | null
           favorite_food?: string | null
+          how_we_met?: string | null
           id?: string
           location?: string | null
           name?: string
