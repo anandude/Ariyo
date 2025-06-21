@@ -1,11 +1,11 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Edit3, Save, Plus, X, Calendar, MapPin, MessageCircle, Users, Heart, Home, Upload, CalendarPlus } from "lucide-react";
+import { ArrowLeft, Edit3, Save, Plus, X, Calendar, MapPin, MessageCircle, Users, Heart, Home, CalendarPlus } from "lucide-react";
 import { Person, Plan } from "@/hooks/usePeople";
+import ImageUpload from "@/components/ImageUpload";
 
 interface PersonProfileProps {
   person: Person;
@@ -49,6 +49,20 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
   const handleCancel = () => {
     setEditedPerson(person);
     setIsEditing(false);
+  };
+
+  const handleImageUploaded = (url: string) => {
+    setEditedPerson({
+      ...editedPerson,
+      image_url: url
+    });
+  };
+
+  const handleImageRemoved = () => {
+    setEditedPerson({
+      ...editedPerson,
+      image_url: undefined
+    });
   };
 
   const addCustomField = () => {
@@ -179,15 +193,10 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
             </div>
             {isEditing && (
               <div className="mt-4">
-                <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <Upload size={16} />
-                  Profile Image URL
-                </Label>
-                <Input
-                  value={editedPerson.image_url || ""}
-                  onChange={(e) => setEditedPerson({ ...editedPerson, image_url: e.target.value })}
-                  placeholder="Enter image URL"
-                  className="mt-1 rounded-xl"
+                <ImageUpload
+                  currentImageUrl={editedPerson.image_url}
+                  onImageUploaded={handleImageUploaded}
+                  onImageRemoved={handleImageRemoved}
                 />
               </div>
             )}
