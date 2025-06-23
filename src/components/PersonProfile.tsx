@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Edit3, Save, Plus, X, Calendar, MapPin, MessageCircle, Users, Heart, Home, CalendarPlus } from "lucide-react";
 import { Person, Plan } from "@/hooks/usePeople";
-import ImageUploadModal from "@/components/ImageUploadModal";
+import ProfilePictureModal from "@/components/ProfilePictureModal";
 
 interface PersonProfileProps {
   person: Person;
@@ -189,8 +189,10 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div 
-                className="w-20 h-20 rounded-full overflow-hidden cursor-pointer border-2 border-gray-200 hover:border-blue-400 transition-colors"
-                onClick={() => setShowImageModal(true)}
+                className={`w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 transition-colors ${
+                  isEditing ? 'cursor-pointer hover:border-blue-400' : ''
+                }`}
+                onClick={() => isEditing && setShowImageModal(true)}
               >
                 {editedPerson.image_url ? (
                   <img 
@@ -551,8 +553,8 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
         </Card>
       </div>
 
-      {/* Image Upload Modal */}
-      <ImageUploadModal
+      {/* Profile Picture Modal */}
+      <ProfilePictureModal
         isOpen={showImageModal}
         onClose={() => setShowImageModal(false)}
         currentImageUrl={editedPerson.image_url}

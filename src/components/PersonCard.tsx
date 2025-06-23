@@ -27,6 +27,15 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
     }
   };
 
+  const getImageStyle = () => {
+    if (!person.image_position) return {};
+    const { x, y, scale } = person.image_position;
+    return {
+      transform: `translate(${x}px, ${y}px) scale(${scale})`,
+      transformOrigin: 'center'
+    };
+  };
+
   const Icon = getCategoryIcon(person.category);
 
   return (
@@ -49,6 +58,7 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
                 src={person.image_url} 
                 alt={person.name}
                 className="w-full h-full object-cover"
+                style={getImageStyle()}
                 onError={(e) => {
                   // Fallback to gradient if image fails to load
                   const target = e.target as HTMLImageElement;
