@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -105,7 +104,7 @@ const UpcomingDatesDropdown: React.FC<UpcomingDatesDropdownProps> = ({ people })
         <div className="p-3 border-b">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4" />
-            <span className="font-medium">Upcoming Dates</span>
+            <span className="font-medium">Dates to Remember</span>
           </div>
         </div>
         <div className="p-3 space-y-3">
@@ -138,7 +137,7 @@ const UpcomingDatesDropdown: React.FC<UpcomingDatesDropdownProps> = ({ people })
                 <p className="text-xs text-gray-600 ml-6">
                   {event.type === 'birthday' 
                     ? 'Birthday' 
-                    : event.plan.description
+                    : `${event.plan.description}${event.plan.time ? ` at ${event.plan.time}` : ''}`
                   }
                 </p>
               </div>
