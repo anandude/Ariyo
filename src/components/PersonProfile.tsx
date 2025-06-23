@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Edit3, Save, Plus, X, Calendar, MapPin, MessageCircle, Users, Heart, Home, CalendarPlus } from "lucide-react";
 import { Person, Plan } from "@/hooks/usePeople";
-import ImageUpload from "@/components/ImageUpload";
+import ImageUploadModal from "@/components/ImageUploadModal";
 
 interface PersonProfileProps {
   person: Person;
@@ -21,7 +22,9 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
   const [showAddField, setShowAddField] = useState(false);
   const [newPlanDescription, setNewPlanDescription] = useState("");
   const [newPlanDate, setNewPlanDate] = useState("");
+  const [newPlanTime, setNewPlanTime] = useState("");
   const [showAddPlan, setShowAddPlan] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -51,18 +54,22 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
     setIsEditing(false);
   };
 
-  const handleImageUploaded = (url: string) => {
+  const handleImageUploaded = (url: string, position: { x: number; y: number; scale: number }) => {
     setEditedPerson({
       ...editedPerson,
-      image_url: url
+      image_url: url,
+      image_position: position
     });
+    setShowImageModal(false);
   };
 
   const handleImageRemoved = () => {
     setEditedPerson({
       ...editedPerson,
-      image_url: undefined
+      image_url: undefined,
+      image_position: undefined
     });
+    setShowImageModal(false);
   };
 
   const addCustomField = () => {
@@ -94,7 +101,8 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
       const newPlan: Plan = {
         id: Date.now().toString(),
         description: newPlanDescription.trim(),
-        date: newPlanDate
+        date: newPlanDate,
+        time: newPlanTime || undefined
       };
       setEditedPerson({
         ...editedPerson,
@@ -102,6 +110,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
       });
       setNewPlanDescription("");
       setNewPlanDate("");
+      setNewPlanTime("");
       setShowAddPlan(false);
     }
   };
@@ -120,6 +129,15 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
         plan.id === planId ? { ...plan, [field]: value } : plan
       )
     });
+  };
+
+  const getImageStyle = () => {
+    if (!editedPerson.image_position) return {};
+    const { x, y, scale } = editedPerson.image_position;
+    return {
+      transform: `translate(${x}px, ${y}px) scale(${scale})`,
+      transformOrigin: 'center'
+    };
   };
 
   const Icon = getCategoryIcon(person.category);
@@ -170,14 +188,17 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
         <Card className="mb-6 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-full overflow-hidden">
+              <div 
+                className="w-20 h-20 rounded-full overflow-hidden cursor-pointer border-2 border-gray-200 hover:border-blue-400 transition-colors"
+                onClick={() => setShowImageModal(true)}
+              >
                 {editedPerson.image_url ? (
                   <img 
                     src={editedPerson.image_url} 
                     alt={editedPerson.name}
                     className="w-full h-full object-cover"
+                    style={getImageStyle()}
                     onError={(e) => {
-                      // Fallback to gradient if image fails to load
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
                       const parent = target.parentElement;
@@ -193,22 +214,21 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                 )}
               </div>
               <div className="flex-1">
-                <h1 className="text-2xl font-bold text-gray-800 mb-2">{editedPerson.name}</h1>
+                {isEditing ? (
+                  <Input
+                    value={editedPerson.name}
+                    onChange={(e) => setEditedPerson({ ...editedPerson, name: e.target.value })}
+                    className="text-2xl font-bold text-gray-800 mb-2 rounded-xl border-2"
+                  />
+                ) : (
+                  <h1 className="text-2xl font-bold text-gray-800 mb-2">{editedPerson.name}</h1>
+                )}
                 <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(editedPerson.category)}`}>
                   <Icon size={16} />
                   {editedPerson.category}
                 </div>
               </div>
             </div>
-            {isEditing && (
-              <div className="mt-4">
-                <ImageUpload
-                  currentImageUrl={editedPerson.image_url}
-                  onImageUploaded={handleImageUploaded}
-                  onImageRemoved={handleImageRemoved}
-                />
-              </div>
-            )}
           </CardContent>
         </Card>
 
@@ -324,25 +344,42 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                         <p className="text-gray-600 mt-1">{plan.description}</p>
                       )}
                     </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">Date</Label>
-                      {isEditing ? (
-                        <Input
-                          type="date"
-                          value={plan.date}
-                          onChange={(e) => updatePlan(plan.id, 'date', e.target.value)}
-                          className="mt-1"
-                        />
-                      ) : (
-                        <p className="text-gray-600 mt-1">
-                          {plan.date ? new Date(plan.date).toLocaleDateString('en-US', { 
-                            weekday: 'long', 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
-                          }) : "No date set"}
-                        </p>
-                      )}
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Date</Label>
+                        {isEditing ? (
+                          <Input
+                            type="date"
+                            value={plan.date}
+                            onChange={(e) => updatePlan(plan.id, 'date', e.target.value)}
+                            className="mt-1"
+                          />
+                        ) : (
+                          <p className="text-gray-600 mt-1">
+                            {plan.date ? new Date(plan.date).toLocaleDateString('en-US', { 
+                              weekday: 'long', 
+                              year: 'numeric', 
+                              month: 'long', 
+                              day: 'numeric' 
+                            }) : "No date set"}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Time</Label>
+                        {isEditing ? (
+                          <Input
+                            type="time"
+                            value={plan.time || ""}
+                            onChange={(e) => updatePlan(plan.id, 'time', e.target.value)}
+                            className="mt-1"
+                          />
+                        ) : (
+                          <p className="text-gray-600 mt-1">
+                            {plan.time || "No time set"}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                   {isEditing && (
@@ -367,12 +404,21 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                   placeholder="Plan description (e.g., 'Coffee at Central Park')"
                   className="rounded-xl"
                 />
-                <Input
-                  type="date"
-                  value={newPlanDate}
-                  onChange={(e) => setNewPlanDate(e.target.value)}
-                  className="rounded-xl"
-                />
+                <div className="grid grid-cols-2 gap-2">
+                  <Input
+                    type="date"
+                    value={newPlanDate}
+                    onChange={(e) => setNewPlanDate(e.target.value)}
+                    className="rounded-xl"
+                  />
+                  <Input
+                    type="time"
+                    value={newPlanTime}
+                    onChange={(e) => setNewPlanTime(e.target.value)}
+                    placeholder="Time"
+                    className="rounded-xl"
+                  />
+                </div>
                 <div className="flex gap-2">
                   <Button
                     onClick={addPlan}
@@ -386,6 +432,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                       setShowAddPlan(false);
                       setNewPlanDescription("");
                       setNewPlanDate("");
+                      setNewPlanTime("");
                     }}
                     size="sm"
                     variant="outline"
@@ -503,6 +550,17 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Image Upload Modal */}
+      <ImageUploadModal
+        isOpen={showImageModal}
+        onClose={() => setShowImageModal(false)}
+        currentImageUrl={editedPerson.image_url}
+        currentPosition={editedPerson.image_position}
+        onImageUploaded={handleImageUploaded}
+        onImageRemoved={handleImageRemoved}
+        personName={editedPerson.name}
+      />
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,6 +7,7 @@ export interface Plan {
   id: string;
   description: string;
   date: string;
+  time?: string;
 }
 
 export interface Person {
@@ -18,6 +18,7 @@ export interface Person {
   location?: string;
   how_we_met?: string;
   image_url?: string;
+  image_position?: { x: number; y: number; scale: number };
   custom_fields?: Record<string, string>;
   plans_made?: Plan[];
   created_at?: string;
@@ -33,7 +34,8 @@ const convertJsonToPlans = (jsonData: any): Plan[] => {
   return jsonData.map((item: any) => ({
     id: item.id || '',
     description: item.description || '',
-    date: item.date || ''
+    date: item.date || '',
+    time: item.time || undefined
   }));
 };
 
@@ -42,7 +44,8 @@ const convertPlansToJson = (plans: Plan[]): any => {
   return plans.map(plan => ({
     id: plan.id,
     description: plan.description,
-    date: plan.date
+    date: plan.date,
+    time: plan.time
   }));
 };
 
@@ -72,11 +75,11 @@ export const usePeople = () => {
           variant: "destructive",
         });
       } else {
-        // Convert the database records to our Person type
         const convertedPeople: Person[] = (data || []).map(person => ({
           ...person,
           custom_fields: person.custom_fields as Record<string, string> || {},
-          plans_made: convertJsonToPlans(person.plans_made)
+          plans_made: convertJsonToPlans(person.plans_made),
+          image_position: person.image_position as { x: number; y: number; scale: number } || undefined
         }));
         setPeople(convertedPeople);
       }
@@ -116,7 +119,6 @@ export const usePeople = () => {
         return null;
       }
 
-      // Convert the database record to our Person type
       const convertedPerson: Person = {
         ...data,
         custom_fields: data.custom_fields as Record<string, string> || {},
@@ -139,7 +141,6 @@ export const usePeople = () => {
     if (!user) return null;
 
     try {
-      // Convert plans_made to Json format for database storage
       const dbUpdates = {
         ...updates,
         updated_at: new Date().toISOString(),
@@ -164,11 +165,11 @@ export const usePeople = () => {
         return null;
       }
 
-      // Convert the database record to our Person type
       const convertedPerson: Person = {
         ...data,
         custom_fields: data.custom_fields as Record<string, string> || {},
-        plans_made: convertJsonToPlans(data.plans_made)
+        plans_made: convertJsonToPlans(data.plans_made),
+        image_position: data.image_position as { x: number; y: number; scale: number } || undefined
       };
 
       setPeople(prev => 

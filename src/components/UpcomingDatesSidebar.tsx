@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -85,7 +84,7 @@ const UpcomingDatesSidebar: React.FC<UpcomingDatesSidebarProps> = ({ people }) =
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Calendar className="w-5 h-5" />
-          Upcoming Dates
+          Dates to Remember
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -118,7 +117,7 @@ const UpcomingDatesSidebar: React.FC<UpcomingDatesSidebarProps> = ({ people }) =
               <p className="text-xs text-gray-600 ml-6">
                 {event.type === 'birthday' 
                   ? 'Birthday' 
-                  : event.plan.description
+                  : `${event.plan.description}${event.plan.time ? ` at ${event.plan.time}` : ''}`
                 }
               </p>
             </div>
