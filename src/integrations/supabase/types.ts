@@ -18,6 +18,7 @@ export type Database = {
           favorite_food: string | null
           how_we_met: string | null
           id: string
+          image_position: Json | null
           image_url: string | null
           location: string | null
           name: string
@@ -33,6 +34,7 @@ export type Database = {
           favorite_food?: string | null
           how_we_met?: string | null
           id?: string
+          image_position?: Json | null
           image_url?: string | null
           location?: string | null
           name: string
@@ -48,6 +50,7 @@ export type Database = {
           favorite_food?: string | null
           how_we_met?: string | null
           id?: string
+          image_position?: Json | null
           image_url?: string | null
           location?: string | null
           name?: string
