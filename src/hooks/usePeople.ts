@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -79,7 +80,7 @@ export const usePeople = () => {
           ...person,
           custom_fields: person.custom_fields as Record<string, string> || {},
           plans_made: convertJsonToPlans(person.plans_made),
-          image_position: person.image_position as { x: number; y: number; scale: number } || undefined
+          image_position: person.image_position ? person.image_position as { x: number; y: number; scale: number } : undefined
         }));
         setPeople(convertedPeople);
       }
@@ -122,7 +123,8 @@ export const usePeople = () => {
       const convertedPerson: Person = {
         ...data,
         custom_fields: data.custom_fields as Record<string, string> || {},
-        plans_made: convertJsonToPlans(data.plans_made)
+        plans_made: convertJsonToPlans(data.plans_made),
+        image_position: data.image_position ? data.image_position as { x: number; y: number; scale: number } : undefined
       };
 
       setPeople(prev => [convertedPerson, ...prev]);
@@ -169,7 +171,7 @@ export const usePeople = () => {
         ...data,
         custom_fields: data.custom_fields as Record<string, string> || {},
         plans_made: convertJsonToPlans(data.plans_made),
-        image_position: data.image_position as { x: number; y: number; scale: number } || undefined
+        image_position: data.image_position ? data.image_position as { x: number; y: number; scale: number } : undefined
       };
 
       setPeople(prev => 
