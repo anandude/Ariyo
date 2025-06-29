@@ -23,9 +23,7 @@ const Landing = () => {
       <header className="container mx-auto px-4 py-6">
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <Users className="w-5 h-5 text-white" />
-            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="w-8 h-8"><text y=".9em" font-size="90">🧠</text></svg>
             <span className="text-xl font-bold text-gray-800">Ariyo</span>
           </div>
           <div className="flex items-center gap-4">
