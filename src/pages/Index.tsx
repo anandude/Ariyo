@@ -84,11 +84,11 @@ const Index = () => {
                   <Menu />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left">
+              <SheetContent side="left" className="flex flex-col">
                 <SheetHeader>
                   <SheetTitle>Categories</SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col gap-2 mt-4">
+                <div className="flex-grow flex flex-col gap-2 mt-4">
                   {categories.map((category) => {
                     const Icon = getCategoryIcon(category);
                     const categoryCount = category === "All" ? people.length : people.filter(p => p.category === category).length;
@@ -115,6 +115,16 @@ const Index = () => {
                     );
                   })}
                 </div>
+                <div className="mt-auto pt-4 border-t border-gray-200">
+                  <Button
+                    onClick={handleSignOut}
+                    variant="ghost"
+                    className="w-full justify-start flex items-center gap-2 text-red-500 hover:text-red-600 hover:bg-red-50"
+                  >
+                    <LogOut size={16} />
+                    Sign Out
+                  </Button>
+                </div>
               </SheetContent>
             </Sheet>
           </div>
@@ -134,10 +144,10 @@ const Index = () => {
                 onClick={handleSignOut}
                 variant="outline"
                 size="sm"
-                className="flex items-center gap-2"
+                className="hidden md:flex items-center gap-2"
               >
                 <LogOut size={16} />
-                <span className="hidden md:inline">Sign Out</span>
+                Sign Out
               </Button>
             </div>
           </div>
