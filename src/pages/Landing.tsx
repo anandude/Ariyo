@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Users, Heart, Calendar, MapPin, Sparkles, ArrowRight, Star } from 'lucide-react';
+import { Users, Heart, Calendar, MapPin, ArrowRight, Star, Brain, Shield, Sparkles } from 'lucide-react';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -18,234 +18,291 @@ const Landing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="container mx-auto px-4 py-6">
-        <nav className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <Users className="w-5 h-5 text-white" />
+      <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
+        <div className="container mx-auto px-6 py-4">
+          <nav className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                <Users className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <span className="text-2xl font-bold text-foreground tracking-tight">Ariyo</span>
             </div>
-            <span className="text-xl font-bold text-gray-800">Ariyo</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/auth')}
-              className="text-gray-600 hover:text-gray-800"
-            >
-              Sign in
-            </Button>
-            <Button 
-              onClick={handleOpenApp}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-full shadow-lg transition-all duration-200 hover:scale-105"
-            >
-              Get started
-            </Button>
-          </div>
-        </nav>
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate('/auth')}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Sign in
+              </Button>
+              <Button 
+                onClick={handleOpenApp}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Get started
+              </Button>
+            </div>
+          </nav>
+        </div>
       </header>
 
       {/* Hero Section */}
-      <main className="container mx-auto px-4 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h1 className="text-5xl font-bold text-gray-900 leading-tight">
-                The better way to{' '}
-                <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                  remember
-                </span>{' '}
-                the people in your life
-              </h1>
-              <p className="text-xl text-gray-600 leading-relaxed">
-                A beautifully designed app to keep track of names, birthdays, 
-                and personal details of everyone who matters to you.
+      <main className="relative">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative container mx-auto px-6 py-20 lg:py-32">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center space-y-8 mb-20">
+              <div className="space-y-6">
+                <h1 className="text-6xl lg:text-7xl font-bold text-foreground leading-none tracking-tighter">
+                  Remember
+                  <span className="block text-primary">
+                    everyone
+                  </span>
+                  who matters
+                </h1>
+                <p className="text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                  A beautifully crafted app to help you remember names, birthdays, 
+                  and meaningful details about the people in your life.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button
+                  onClick={handleOpenApp}
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-lg group"
+                >
+                  Start remembering
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-8 py-4 rounded-xl border-2 text-lg font-medium"
+                >
+                  Watch demo
+                </Button>
+              </div>
+
+              <p className="text-sm text-muted-foreground">
+                Free forever • No credit card required
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                onClick={handleOpenApp}
-                size="lg"
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
-              >
-                <Sparkles className="w-5 h-5" />
-                Start remembering
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-8 py-4 rounded-full border-2 border-gray-200 hover:border-indigo-300 transition-all duration-200"
-              >
-                Learn more
-              </Button>
-            </div>
-
-            <p className="text-sm text-gray-500">
-              No credit card required • Free forever plan available
-            </p>
-          </div>
-
-          {/* Demo Card */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-3xl blur-3xl opacity-20"></div>
-            <Card className="relative bg-white/80 backdrop-blur-sm border-0 shadow-2xl rounded-3xl overflow-hidden">
-              <CardContent className="p-8">
-                <div className="space-y-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                      S
+            {/* Demo Preview */}
+            <div className="max-w-4xl mx-auto">
+              <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl">
+                <CardContent className="p-8">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center">
+                          <span className="text-primary-foreground font-bold text-2xl">A</span>
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold text-card-foreground">Alex Chen</h3>
+                          <div className="flex items-center gap-2 text-muted-foreground">
+                            <Users size={14} />
+                            <span>Friend</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3 text-muted-foreground">
+                          <Calendar size={16} />
+                          <span>Birthday: March 15th</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-muted-foreground">
+                          <MapPin size={16} />
+                          <span>Lives in San Francisco</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-muted-foreground">
+                          <Heart size={16} />
+                          <span>Loves photography & travel</span>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-lg">Sarah Johnson</h3>
-                      <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium w-fit">
-                        <Heart size={10} />
-                        Family
+                    
+                    <div className="space-y-4">
+                      <div className="bg-muted rounded-xl p-4">
+                        <p className="text-sm text-muted-foreground italic">
+                          "Met at Sarah's birthday party last year. Works as a UX designer at a startup. 
+                          Always brings amazing homemade sourdough to gatherings. Planning a trip to Japan next month."
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Photography</div>
+                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Sourdough</div>
+                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Travel</div>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Calendar size={14} />
-                      <span>Birthday: March 15</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <MapPin size={14} />
-                      <span>San Francisco, CA</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Users size={14} />
-                      <span>Met at university orientation</span>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-3 border-t border-gray-100">
-                    <div className="text-xs text-gray-500">+3 more details</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </main>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Everything you need to stay connected
-          </h2>
-          <p className="text-xl text-gray-600">
-            Simple, powerful features to help you remember what matters
-          </p>
-        </div>
+      <section className="py-20 lg:py-32 bg-muted/30">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
+                Everything you need to stay connected
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Powerful yet simple features designed to help you remember what matters most.
+              </p>
+            </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          <Card className="bg-white/50 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-            <CardContent className="p-6 text-center">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Organize by Categories</h3>
-              <p className="text-gray-600">Group people by Friends, Family, or Acquaintances for easy organization.</p>
-            </CardContent>
-          </Card>
+            <div className="grid md:grid-cols-3 gap-8">
+              <Card className="bg-card/50 backdrop-blur-sm border border-border/50 hover:bg-card/80 transition-all duration-300 group">
+                <CardContent className="p-8">
+                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                    <Brain className="w-7 h-7 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-4 text-card-foreground">Smart Organization</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Intelligently categorize people by relationships, context, and importance. 
+                    Never lose track of anyone again.
+                  </p>
+                </CardContent>
+              </Card>
 
-          <Card className="bg-white/50 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-            <CardContent className="p-6 text-center">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Calendar className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Never Miss a Birthday</h3>
-              <p className="text-gray-600">Keep track of birthdays and important dates for everyone in your life.</p>
-            </CardContent>
-          </Card>
+              <Card className="bg-card/50 backdrop-blur-sm border border-border/50 hover:bg-card/80 transition-all duration-300 group">
+                <CardContent className="p-8">
+                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                    <Calendar className="w-7 h-7 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-4 text-card-foreground">Important Dates</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Never miss another birthday, anniversary, or special occasion. 
+                    Get gentle reminders when it matters.
+                  </p>
+                </CardContent>
+              </Card>
 
-          <Card className="bg-white/50 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-            <CardContent className="p-6 text-center">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Personal Details</h3>
-              <p className="text-gray-600">Remember how you met, their interests, and other meaningful details.</p>
-            </CardContent>
-          </Card>
+              <Card className="bg-card/50 backdrop-blur-sm border border-border/50 hover:bg-card/80 transition-all duration-300 group">
+                <CardContent className="p-8">
+                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                    <Shield className="w-7 h-7 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-4 text-card-foreground">Privacy First</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Your personal data stays private and secure. Built with privacy 
+                    by design and complete data ownership.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Loved by people everywhere
-          </h2>
-        </div>
+      {/* Social Proof */}
+      <section className="py-20 lg:py-32">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
+                Loved by thousands
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Join people who never forget a meaningful connection.
+              </p>
+            </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            {
-              name: "Alex Chen",
-              role: "Product Manager",
-              content: "Ariyo has completely changed how I maintain relationships. I never forget important details anymore!",
-              rating: 5
-            },
-            {
-              name: "Maria Rodriguez",
-              role: "Teacher",
-              content: "Perfect for keeping track of my students and their families. So much easier than spreadsheets!",
-              rating: 5
-            },
-            {
-              name: "David Kim",
-              role: "Entrepreneur",
-              content: "Essential for networking. I can remember everyone I meet and the context of our conversations.",
-              rating: 5
-            }
-          ].map((testimonial, index) => (
-            <Card key={index} className="bg-white/50 backdrop-blur-sm border-0 shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-4">"{testimonial.content}"</p>
-                <div>
-                  <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                  <div className="text-sm text-gray-500">{testimonial.role}</div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  name: "Sarah Chen",
+                  role: "Product Manager",
+                  content: "Ariyo completely transformed how I maintain relationships. The interface is beautiful and the features are exactly what I needed.",
+                  avatar: "S"
+                },
+                {
+                  name: "Marcus Johnson",
+                  role: "Sales Director",
+                  content: "Perfect for networking events. I can remember everyone I meet and never have those awkward 'I forgot your name' moments.",
+                  avatar: "M"
+                },
+                {
+                  name: "Elena Rodriguez",
+                  role: "Entrepreneur",
+                  content: "Clean, intuitive, and powerful. Ariyo helps me stay connected with my community in a meaningful way.",
+                  avatar: "E"
+                }
+              ].map((testimonial, i) => (
+                <Card key={i} className="bg-card/50 backdrop-blur-sm border border-border/50">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-1 mb-6">
+                      {[...Array(5)].map((_, j) => (
+                        <Star key={j} size={16} className="text-primary fill-primary" />
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground mb-6 leading-relaxed italic">
+                      "{testimonial.content}"
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                        <span className="text-primary-foreground font-semibold">{testimonial.avatar}</span>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-card-foreground">{testimonial.name}</p>
+                        <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="text-center bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-12 text-white">
-          <h2 className="text-3xl font-bold mb-4">
-            Start remembering the people who matter
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
-            Join thousands of people who never forget a name or detail again.
-          </p>
-          <Button
-            onClick={handleOpenApp}
-            size="lg"
-            className="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-4 rounded-full shadow-lg transition-all duration-200 hover:scale-105 font-semibold"
-          >
-            Get started for free
-          </Button>
+      <section className="py-20 lg:py-32 bg-primary/5">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-primary rounded-3xl p-12 lg:p-16 text-primary-foreground relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80"></div>
+              <div className="relative space-y-6">
+                <Sparkles className="w-12 h-12 mx-auto mb-6 opacity-80" />
+                <h2 className="text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+                  Start remembering today
+                </h2>
+                <p className="text-xl lg:text-2xl mb-8 opacity-90 max-w-2xl mx-auto">
+                  Join thousands of people who never forget a name, birthday, or meaningful moment.
+                </p>
+                <Button
+                  onClick={handleOpenApp}
+                  size="lg"
+                  className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Get started for free
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="container mx-auto px-4 py-8 border-t border-gray-200">
-        <div className="text-center text-gray-600">
-          <p>&copy; 2024 Ariyo. Made with ❤️ to help you remember.</p>
+      <footer className="py-12 border-t border-border/50">
+        <div className="container mx-auto px-6">
+          <div className="text-center text-muted-foreground">
+            <p>&copy; 2024 Ariyo. Crafted with care to help you remember.</p>
+          </div>
         </div>
       </footer>
     </div>

@@ -20,10 +20,10 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case "Friends": return "bg-blue-100 text-blue-700";
-      case "Family": return "bg-red-100 text-red-700";
-      case "Acquaintances": return "bg-green-100 text-green-700";
-      default: return "bg-gray-100 text-gray-700";
+      case "Friends": return "bg-secondary text-secondary-foreground";
+      case "Family": return "bg-accent text-accent-foreground";
+      case "Acquaintances": return "bg-muted text-muted-foreground";
+      default: return "bg-muted text-muted-foreground";
     }
   };
 
@@ -41,12 +41,12 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
   return (
     <Card 
       onClick={onClick}
-      className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 bg-white/80 backdrop-blur-sm border-0 shadow-md"
+      className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 bg-card/80 backdrop-blur-sm border-0 shadow-md"
     >
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <h3 className="font-semibold text-lg text-gray-800 mb-2">{person.name}</h3>
+            <h3 className="font-semibold text-lg text-card-foreground mb-2">{person.name}</h3>
             <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(person.category)}`}>
               <Icon size={12} />
               {person.category}
@@ -65,12 +65,12 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
                   target.style.display = 'none';
                   const parent = target.parentElement;
                   if (parent) {
-                    parent.innerHTML = `<div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">${person.name.charAt(0)}</div>`;
+                    parent.innerHTML = `<div class="w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-lg">${person.name.charAt(0)}</div>`;
                   }
                 }}
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+              <div className="w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-lg">
                 {person.name.charAt(0)}
               </div>
             )}
@@ -79,19 +79,19 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
 
         <div className="space-y-2">
           {person.birthday && (
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Calendar size={14} />
               <span>{new Date(person.birthday).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</span>
             </div>
           )}
           {person.location && (
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin size={14} />
               <span>{person.location}</span>
             </div>
           )}
           {person.how_we_met && (
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MessageCircle size={14} />
               <span>{person.how_we_met}</span>
             </div>

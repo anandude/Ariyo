@@ -17,9 +17,10 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-xl text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-12 h-12 bg-primary/20 rounded-2xl animate-pulse mx-auto"></div>
+          <div className="text-xl text-muted-foreground font-medium">Loading...</div>
         </div>
       </div>
     );
@@ -37,9 +38,10 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-xl text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-12 h-12 bg-primary/20 rounded-2xl animate-pulse mx-auto"></div>
+          <div className="text-xl text-muted-foreground font-medium">Loading...</div>
         </div>
       </div>
     );
