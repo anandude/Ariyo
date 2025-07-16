@@ -76,15 +76,15 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-40">
-        <div className="container mx-auto px-6 py-4 max-w-7xl">
+        <div className="container mx-auto px-4 md:px-6 py-3 md:py-4 max-w-7xl">
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4">
               {/* Mobile menu */}
               <div className="md:hidden">
                 <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                   <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="rounded-xl">
-                      <Menu className="w-5 h-5" />
+                    <Button variant="ghost" size="icon" className="rounded-xl h-9 w-9">
+                      <Menu className="w-4 h-4" />
                     </Button>
                   </SheetTrigger>
                   <SheetContent side="left" className="w-80">
@@ -128,27 +128,27 @@ const Index = () => {
               </div>
               
               {/* Logo and title */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 flex items-center justify-center">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
                   <img 
                     src="/logo/ariyo logo6.png" 
                     alt="Ariyo Logo" 
-                    className="w-10 h-10 object-contain"
+                    className="w-8 h-8 md:w-10 md:h-10 object-contain"
                   />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-foreground tracking-tight">Ariyo</h1>
-                  <p className="text-sm text-muted-foreground hidden sm:block">Your personal network</p>
+                  <h1 className="text-lg md:text-2xl font-bold text-foreground tracking-tight">Ariyo</h1>
+                  <p className="text-xs md:text-sm text-muted-foreground hidden sm:block">Your personal network</p>
                 </div>
               </div>
             </div>
             
             {/* User info and actions */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 md:gap-4">
               <UpcomingDatesDropdown people={people} />
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 bg-secondary rounded-xl flex items-center justify-center">
-                  <User size={16} className="text-secondary-foreground" />
+              <div className="flex items-center gap-1 md:gap-3">
+                <div className="w-8 h-8 md:w-9 md:h-9 bg-secondary rounded-xl flex items-center justify-center">
+                  <User size={14} className="md:w-4 md:h-4 text-secondary-foreground" />
                 </div>
                 <div className="hidden lg:block">
                   <p className="text-sm font-medium text-foreground">{user?.email}</p>
@@ -159,10 +159,10 @@ const Index = () => {
                 onClick={handleSignOut}
                 variant="ghost"
                 size="sm"
-                className="text-muted-foreground hover:text-foreground rounded-xl px-4"
+                className="text-muted-foreground hover:text-foreground rounded-xl px-2 md:px-4 h-8 md:h-9"
               >
-                <LogOut size={16} className="mr-2" />
-                <span className="hidden sm:inline">Sign out</span>
+                <LogOut size={14} className="md:w-4 md:h-4 md:mr-2" />
+                <span className="hidden md:inline">Sign out</span>
               </Button>
             </div>
           </div>
