@@ -1,94 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+/* Modern dark theme with orange/red accents inspired by the reference design */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Light mode - minimal and clean */
+    --background: 0 0% 98%; /* Almost white */
+    --foreground: 0 0% 8%; /* Very dark gray, almost black */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%; /* Pure white */
+    --card-foreground: 0 0% 8%; /* Very dark gray */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%; /* Pure white */
+    --popover-foreground: 0 0% 8%; /* Very dark gray */
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 14 100% 57%; /* Orange/red from inspiration */
+    --primary-foreground: 0 0% 98%; /* Almost white */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 96%; /* Light gray */
+    --secondary-foreground: 0 0% 15%; /* Dark gray */
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 95%; /* Very light gray */
+    --muted-foreground: 0 0% 45%; /* Medium gray */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 0 0% 95%; /* Very light gray */
+    --accent-foreground: 0 0% 15%; /* Dark gray */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84.2% 60.2%; /* Keep destructive red */
+    --destructive-foreground: 0 0% 98%; /* Almost white */
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 90%; /* Light gray border */
+    --input: 0 0% 90%; /* Light gray input background */
+    --ring: 14 100% 57%; /* Orange/red ring */
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 98%; /* Almost white */
+    --sidebar-foreground: 0 0% 8%; /* Very dark gray */
+    --sidebar-primary: 14 100% 57%; /* Orange/red */
+    --sidebar-primary-foreground: 0 0% 98%; /* Almost white */
+    --sidebar-accent: 0 0% 96%; /* Light gray */
+    --sidebar-accent-foreground: 0 0% 15%; /* Dark gray */
+    --sidebar-border: 0 0% 90%; /* Light gray border */
+    --sidebar-ring: 14 100% 57%; /* Orange/red ring */
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark mode - sophisticated dark theme matching inspiration */
+    --background: 0 0% 5%; /* Very dark, almost black */
+    --foreground: 0 0% 95%; /* Almost white */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 8%; /* Dark gray */
+    --card-foreground: 0 0% 95%; /* Almost white */
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 8%; /* Dark gray */
+    --popover-foreground: 0 0% 95%; /* Almost white */
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 14 100% 57%; /* Orange/red accent */
+    --primary-foreground: 0 0% 5%; /* Very dark */
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 12%; /* Slightly lighter dark gray */
+    --secondary-foreground: 0 0% 85%; /* Light gray */
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 10%; /* Dark gray */
+    --muted-foreground: 0 0% 60%; /* Medium gray */
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 0% 12%; /* Slightly lighter dark gray */
+    --accent-foreground: 0 0% 85%; /* Light gray */
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84.2% 60.2%; /* Keep destructive red */
+    --destructive-foreground: 0 0% 95%; /* Almost white */
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 0 0% 15%; /* Dark gray border */
+    --input: 0 0% 15%; /* Dark gray input background */
+    --ring: 14 100% 57%; /* Orange/red ring */
+    
+    --sidebar-background: 0 0% 5%; /* Very dark */
+    --sidebar-foreground: 0 0% 95%; /* Almost white */
+    --sidebar-primary: 14 100% 57%; /* Orange/red */
+    --sidebar-primary-foreground: 0 0% 5%; /* Very dark */
+    --sidebar-accent: 0 0% 12%; /* Slightly lighter dark gray */
+    --sidebar-accent-foreground: 0 0% 85%; /* Light gray */
+    --sidebar-border: 0 0% 15%; /* Dark gray border */
+    --sidebar-ring: 14 100% 57%; /* Orange/red ring */
   }
 }
 
@@ -97,7 +95,61 @@
     @apply border-border;
   }
 
+  html {
+    @apply dark; /* Default to dark theme */
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Enhanced typography hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+    line-height: 1.3;
+  }
+
+  /* Better text spacing */
+  p {
+    @apply leading-relaxed;
+  }
+
+  /* Smooth transitions */
+  * {
+    @apply transition-colors duration-200;
+  }
+
+  /* Custom scrollbar for dark theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/30;
   }
 }

@@ -28,23 +28,23 @@ const AddPersonModal = ({ isOpen, onClose, onAdd }: AddPersonModalProps) => {
   };
 
   const categories = [
-    { value: "Friends", icon: Users, color: "text-blue-600" },
-    { value: "Family", icon: Heart, color: "text-red-600" },
-    { value: "Acquaintances", icon: Home, color: "text-green-600" }
+    { value: "Friends", icon: Users, color: "text-primary" },
+    { value: "Family", icon: Heart, color: "text-primary" },
+    { value: "Acquaintances", icon: Home, color: "text-primary" }
   ];
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-white rounded-2xl border-0 shadow-2xl">
+      <DialogContent className="sm:max-w-md bg-card rounded-2xl border-0 shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center text-gray-800">
+          <DialogTitle className="text-2xl font-bold text-center text-card-foreground">
             Add New Person
           </DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6 mt-6">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+            <Label htmlFor="name" className="text-sm font-medium text-card-foreground">
               Name
             </Label>
             <Input
@@ -52,20 +52,20 @@ const AddPersonModal = ({ isOpen, onClose, onAdd }: AddPersonModalProps) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter their name"
-              className="border-gray-200 rounded-xl h-12 text-lg"
+              className="border-border rounded-xl h-12 text-lg"
               autoFocus
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-700">
+            <Label className="text-sm font-medium text-card-foreground">
               Category
             </Label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="border-gray-200 rounded-xl h-12">
+              <SelectTrigger className="border-border rounded-xl h-12">
                 <SelectValue placeholder="Choose a category" />
               </SelectTrigger>
-              <SelectContent className="bg-white border-gray-200 rounded-xl">
+              <SelectContent className="bg-card border-border rounded-xl">
                 {categories.map((cat) => {
                   const Icon = cat.icon;
                   return (
@@ -86,14 +86,14 @@ const AddPersonModal = ({ isOpen, onClose, onAdd }: AddPersonModalProps) => {
               type="button"
               variant="outline"
               onClick={onClose}
-              className="flex-1 rounded-xl h-12 border-gray-200"
+              className="flex-1 rounded-xl h-12 border-border"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={!name.trim() || !category}
-              className="flex-1 bg-blue-500 hover:bg-blue-600 rounded-xl h-12"
+              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-12"
             >
               Add Person
             </Button>
