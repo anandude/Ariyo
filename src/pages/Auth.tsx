@@ -79,8 +79,12 @@ const Auth = () => {
         {/* Header */}
         <div className="text-center mb-10">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
-              <Users className="w-8 h-8 text-primary-foreground" />
+            <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center shadow-lg backdrop-blur-sm">
+              <img 
+                src="/logo/ariyo logo6.png" 
+                alt="Ariyo Logo" 
+                className="w-12 h-12 object-contain"
+              />
             </div>
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-3 tracking-tight">Welcome to Ariyo</h1>

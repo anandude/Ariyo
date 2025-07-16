@@ -24,8 +24,12 @@ const Landing = () => {
         <div className="container mx-auto px-6 py-4">
           <nav className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                <Users className="w-5 h-5 text-primary-foreground" />
+              <div className="w-10 h-10 flex items-center justify-center">
+                <img 
+                  src="/logo/ariyo logo6.png" 
+                  alt="Ariyo Logo" 
+                  className="w-10 h-10 object-contain"
+                />
               </div>
               <span className="text-2xl font-bold text-foreground tracking-tight">Ariyo</span>
             </div>
@@ -81,13 +85,6 @@ const Landing = () => {
                 >
                   Start remembering
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="px-8 py-4 rounded-xl border-2 text-lg font-medium"
-                >
-                  Watch demo
                 </Button>
               </div>
 
@@ -210,6 +207,7 @@ const Landing = () => {
       </section>
 
       {/* Social Proof */}
+      {/*
       <section className="py-20 lg:py-32">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
@@ -269,6 +267,7 @@ const Landing = () => {
           </div>
         </div>
       </section>
+      */}
 
       {/* CTA Section */}
       <section className="py-20 lg:py-32 bg-primary/5">
