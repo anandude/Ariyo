@@ -37,10 +37,10 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case "Friends": return "bg-blue-100 text-blue-700";
-      case "Family": return "bg-red-100 text-red-700";
-      case "Acquaintances": return "bg-green-100 text-green-700";
-      default: return "bg-gray-100 text-gray-700";
+      case "Friends": return "bg-secondary text-secondary-foreground";
+      case "Family": return "bg-accent text-accent-foreground";
+      case "Acquaintances": return "bg-muted text-muted-foreground";
+      default: return "bg-muted text-muted-foreground";
     }
   };
 
@@ -143,14 +143,14 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
   const Icon = getCategoryIcon(person.category);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary to-muted">
       <div className="container mx-auto px-4 py-6 max-w-2xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <Button
             onClick={onBack}
             variant="ghost"
-            className="flex items-center gap-2 hover:bg-white/50 rounded-xl"
+            className="flex items-center gap-2 hover:bg-secondary/50 rounded-xl"
           >
             <ArrowLeft size={20} />
             Back
@@ -159,7 +159,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
           {!isEditing ? (
             <Button
               onClick={() => setIsEditing(true)}
-              className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 rounded-xl"
+              className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl"
             >
               <Edit3 size={16} />
               Edit
@@ -175,7 +175,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
               </Button>
               <Button
                 onClick={handleSave}
-                className="bg-green-500 hover:bg-green-600 rounded-xl"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl"
               >
                 <Save size={16} className="mr-2" />
                 Save
@@ -185,12 +185,12 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
         </div>
 
         {/* Profile Header */}
-        <Card className="mb-6 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+        <Card className="mb-6 bg-card/80 backdrop-blur-sm border-0 shadow-lg">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div 
-                className={`w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 transition-colors ${
-                  isEditing ? 'cursor-pointer hover:border-blue-400' : ''
+                className={`w-20 h-20 rounded-full overflow-hidden border-2 border-border transition-colors ${
+                  isEditing ? 'cursor-pointer hover:border-primary' : ''
                 }`}
                 onClick={() => isEditing && setShowImageModal(true)}
               >
@@ -205,12 +205,12 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                       target.style.display = 'none';
                       const parent = target.parentElement;
                       if (parent) {
-                        parent.innerHTML = `<div class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-2xl">${editedPerson.name.charAt(0)}</div>`;
+                        parent.innerHTML = `<div class="w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-2xl">${editedPerson.name.charAt(0)}</div>`;
                       }
                     }}
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-2xl">
+                  <div className="w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-2xl">
                     {editedPerson.name.charAt(0)}
                   </div>
                 )}
@@ -220,10 +220,10 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                   <Input
                     value={editedPerson.name}
                     onChange={(e) => setEditedPerson({ ...editedPerson, name: e.target.value })}
-                    className="text-2xl font-bold text-gray-800 mb-2 rounded-xl border-2"
+                    className="text-2xl font-bold text-card-foreground mb-2 rounded-xl border-2"
                   />
                 ) : (
-                  <h1 className="text-2xl font-bold text-gray-800 mb-2">{editedPerson.name}</h1>
+                  <h1 className="text-2xl font-bold text-card-foreground mb-2">{editedPerson.name}</h1>
                 )}
                 <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(editedPerson.category)}`}>
                   <Icon size={16} />
