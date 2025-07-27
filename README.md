@@ -48,6 +48,10 @@ Create a `.env.local` file with the following variables:
 - `VITE_SUPABASE_URL`: Your Supabase project URL
 - `VITE_SUPABASE_ANON_KEY`: Your Supabase anonymous key
 
+## License
+
+This project is licensed under the GPLv3 License - see the [LICENSE](LICENSE) file for details.
+
 ## Contributing
 
 Please ensure you don't commit sensitive information like API keys or personal data.
