@@ -100,8 +100,12 @@ const Landing = () => {
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center">
-                          <span className="text-primary-foreground font-bold text-2xl">A</span>
+                        <div className="w-16 h-16 rounded-2xl overflow-hidden">
+                          <img 
+                            src="/Alex_chen.png" 
+                            alt="Alex Chen" 
+                            className="w-full h-full object-cover object-top scale-150"
+                          />
                         </div>
                         <div>
                           <h3 className="text-xl font-semibold text-card-foreground">Alex Chen</h3>
