@@ -8,17 +8,34 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Users, Mail, Lock, UserPlus, LogIn, ArrowLeft } from 'lucide-react';
+import { Users, Mail, Lock, UserPlus, LogIn, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const { signIn, signUp, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, formType: 'signin' | 'signup') => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const formEvent = e as unknown as React.FormEvent;
+      if (formType === 'signin') {
+        handleSignIn(formEvent);
+      } else {
+        handleSignUp(formEvent);
+      }
+    }
+  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,6 +149,7 @@ const Auth = () => {
                         placeholder="your@email.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(e, 'signin')}
                         className="pl-12 h-12 rounded-xl border-border/50 font-medium"
                         required
                       />
@@ -144,13 +162,21 @@ const Auth = () => {
                       <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
                       <Input
                         id="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="pl-12 h-12 rounded-xl border-border/50 font-medium"
+                        onKeyDown={(e) => handleKeyDown(e, 'signin')}
+                        className="pl-12 pr-12 h-12 rounded-xl border-border/50 font-medium"
                         required
                       />
+                      <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
                     </div>
                   </div>
                   
@@ -214,6 +240,7 @@ const Auth = () => {
                         placeholder="your@email.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(e, 'signup')}
                         className="pl-12 h-12 rounded-xl border-border/50 font-medium"
                         required
                       />
@@ -226,13 +253,21 @@ const Auth = () => {
                       <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
                       <Input
                         id="signup-password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="pl-12 h-12 rounded-xl border-border/50 font-medium"
+                        onKeyDown={(e) => handleKeyDown(e, 'signup')}
+                        className="pl-12 pr-12 h-12 rounded-xl border-border/50 font-medium"
                         required
                       />
+                      <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
                     </div>
                   </div>
                   
