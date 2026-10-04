@@ -1,7 +1,7 @@
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
+import React, { createContext, useContext, useEffect, useRef } from 'react';
+import type { User, Session } from '@neondatabase/auth/types';
+import { authClient } from '@/integrations/neon/client';
 import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
@@ -25,52 +25,42 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Reactive session source from the Better Auth React adapter.
+  // useSession() fetches on mount and re-renders on sign-in/sign-out.
+  const { data: sessionData, isPending } = authClient.useSession();
   const navigate = useNavigate();
 
+  const user = sessionData?.user ?? null;
+  const session = sessionData?.session ?? null;
+  const loading = isPending;
+
+  // Preserve the old SIGNED_IN → navigate('/app') behavior: redirect only on
+  // a fresh null → signed-in transition, not on initial session resolution.
+  const prevUserId = useRef<string | null | undefined>(undefined);
   useEffect(() => {
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log('Auth event:', event, session);
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-
-        // Handle successful sign in by redirecting to app
-        if (event === 'SIGNED_IN' && session) {
-          navigate('/app');
-        }
-      }
-    );
-
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+    if (isPending) return;
+    const currentId = user?.id ?? null;
+    if (prevUserId.current === undefined) {
+      prevUserId.current = currentId;
+      return;
+    }
+    if (currentId !== null && prevUserId.current === null) {
+      navigate('/app');
+    }
+    prevUserId.current = currentId;
+  }, [user, isPending, navigate]);
 
   const signUp = async (email: string, password: string) => {
-    const redirectUrl = `${window.location.origin}/app`;
-    
-    const { error } = await supabase.auth.signUp({
+    const { error } = await authClient.signUp.email({
       email,
       password,
-      options: {
-        emailRedirectTo: redirectUrl
-      }
+      name: email.split('@')[0],
     });
     return { error };
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await authClient.signIn.email({
       email,
       password,
     });
@@ -78,17 +68,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await authClient.signIn.social({
       provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/app`
-      }
+      callbackURL: window.location.origin + '/app',
     });
     return { error };
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    await authClient.signOut();
     navigate('/');
   };
 
