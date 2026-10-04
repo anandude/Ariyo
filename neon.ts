@@ -2,7 +2,10 @@ import { defineConfig } from "@neon/config/v1";
 
 export default defineConfig({
   // Declare your Neon services here
-  auth: false,
+  auth: true,
+  dataApi: true,
+  buckets: { "profile-images": { access: "public_read" } },
+  functions: { api: { name: "api", source: "./api.ts" } },
   // Branch policy: per-branch tuning
   branch: (branch) => {
     if (branch.isDefault) {
