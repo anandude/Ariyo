@@ -4,9 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Upload, X, Image } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { authClient } from '@/integrations/neon/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
+
+const FUNCTION_URL = import.meta.env.VITE_NEON_FUNCTION_URL as string | undefined;
 
 interface ImageUploadProps {
   currentImageUrl?: string;
@@ -35,28 +37,43 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     setUploading(true);
     
     try {
-      // Create a unique filename
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}_${Date.now()}.${fileExt}`;
-      
-      // Upload to Supabase Storage
-      const { data, error } = await supabase.storage
-        .from('profile-images')
-        .upload(fileName, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
-
-      if (error) {
-        throw error;
+      if (!FUNCTION_URL) {
+        throw new Error("VITE_NEON_FUNCTION_URL is not configured");
       }
 
-      // Get the public URL
-      const { data: urlData } = supabase.storage
-        .from('profile-images')
-        .getPublicUrl(data.path);
+      // 1. Mint a short-lived JWT for the upload function
+      const { data: tokenData } = await authClient.token();
+      const token = tokenData?.token;
+      if (!token) {
+        throw new Error("Not authenticated");
+      }
 
-      onImageUploaded(urlData.publicUrl);
+      // 2. Ask the Neon function for a presigned upload URL
+      const presignRes = await fetch(`${FUNCTION_URL}/upload`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ filename: file.name, contentType: file.type }),
+      });
+      if (!presignRes.ok) {
+        throw new Error(`Presign request failed (${presignRes.status})`);
+      }
+      const { uploadUrl, publicUrl } = await presignRes.json();
+
+      // 3. PUT the file bytes directly to object storage
+      const putRes = await fetch(uploadUrl, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+      if (!putRes.ok) {
+        throw new Error(`Upload failed (${putRes.status})`);
+      }
+
+      // 4. Store the public URL as the person's image_url
+      onImageUploaded(publicUrl);
       
       toast({
         title: "Success",
