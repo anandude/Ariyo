@@ -35,3 +35,4 @@ supabase/.temp/
 supabase/.branches/
 supabase/.gotrue/
 .supabase/
+.neon
