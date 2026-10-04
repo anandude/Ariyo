@@ -27,6 +27,11 @@ CREATE TABLE IF NOT EXISTS public.people (
 );
 ALTER TABLE public.people ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS people_select ON public.people;
+DROP POLICY IF EXISTS people_insert ON public.people;
+DROP POLICY IF EXISTS people_update ON public.people;
+DROP POLICY IF EXISTS people_delete ON public.people;
+
 CREATE POLICY people_select ON public.people FOR SELECT
   TO authenticated USING (auth.user_id() = user_id);
 CREATE POLICY people_insert ON public.people FOR INSERT

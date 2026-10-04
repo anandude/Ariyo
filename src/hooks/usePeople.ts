@@ -28,21 +28,24 @@ export interface Person {
 }
 
 // Helper function to safely convert Json to Plan[]
-const convertJsonToPlans = (jsonData: any): Plan[] => {
-  if (!jsonData || !Array.isArray(jsonData)) {
+const convertJsonToPlans = (jsonData: unknown): Plan[] => {
+  if (!Array.isArray(jsonData)) {
     return [];
   }
-  
-  return jsonData.map((item: any) => ({
-    id: item.id || '',
-    description: item.description || '',
-    date: item.date || '',
-    time: item.time || undefined
-  }));
+
+  return jsonData.map((item: unknown) => {
+    const record = item as Record<string, unknown>;
+    return {
+      id: (record.id as string) || '',
+      description: (record.description as string) || '',
+      date: (record.date as string) || '',
+      time: (record.time as string) || undefined
+    };
+  });
 };
 
 // Helper function to convert Plan[] to Json
-const convertPlansToJson = (plans: Plan[]): any => {
+const convertPlansToJson = (plans: Plan[]): Plan[] => {
   return plans.map(plan => ({
     id: plan.id,
     description: plan.description,

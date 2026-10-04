@@ -4,12 +4,20 @@ import type { User, Session } from '@neondatabase/auth/types';
 import { authClient } from '@/integrations/neon/client';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Concrete error types inferred from the Better Auth client actions, so the
+ * context signatures stay in sync with `@neondatabase/auth`.
+ */
+type SignUpEmailError = Awaited<ReturnType<typeof authClient.signUp.email>>['error'];
+type SignInEmailError = Awaited<ReturnType<typeof authClient.signIn.email>>['error'];
+type SignInSocialError = Awaited<ReturnType<typeof authClient.signIn.social>>['error'];
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signInWithGoogle: () => Promise<{ error: any }>;
+  signUp: (email: string, password: string) => Promise<{ error: SignUpEmailError }>;
+  signIn: (email: string, password: string) => Promise<{ error: SignInEmailError }>;
+  signInWithGoogle: () => Promise<{ error: SignInSocialError }>;
   signOut: () => Promise<void>;
   loading: boolean;
 }
