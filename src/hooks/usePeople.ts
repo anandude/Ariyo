@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { client } from '@/integrations/neon/client';
+import type { Person as DbPerson } from '@/integrations/neon/types';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
 
@@ -50,6 +51,26 @@ const convertPlansToJson = (plans: Plan[]): any => {
   }));
 };
 
+// Convert a Neon `people` row to the UI-facing `Person` shape.
+// `client.from('people')` is untyped, so callers cast `data` to
+// `DbPerson` / `DbPerson[]` before mapping through here. Nullable columns
+// become `undefined` for the app's optional fields; `user_id` is dropped
+// (RLS enforces ownership server-side).
+const convertRowToPerson = (row: DbPerson): Person => ({
+  id: row.id,
+  name: row.name,
+  category: row.category,
+  birthday: row.birthday ?? undefined,
+  location: row.location ?? undefined,
+  how_we_met: row.how_we_met ?? undefined,
+  image_url: row.image_url ?? undefined,
+  image_position: row.image_position ?? undefined,
+  custom_fields: (row.custom_fields as Record<string, string> | null) ?? {},
+  plans_made: convertJsonToPlans(row.plans_made),
+  created_at: row.created_at,
+  updated_at: row.updated_at,
+});
+
 export const usePeople = () => {
   const [people, setPeople] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,7 +84,7 @@ export const usePeople = () => {
     }
 
     try {
-      const { data, error } = await supabase
+      const { data, error } = await client
         .from('people')
         .select('*')
         .order('created_at', { ascending: false });
@@ -76,13 +97,8 @@ export const usePeople = () => {
           variant: "destructive",
         });
       } else {
-        const convertedPeople: Person[] = (data || []).map(person => ({
-          ...person,
-          custom_fields: person.custom_fields as Record<string, string> || {},
-          plans_made: convertJsonToPlans(person.plans_made),
-          image_position: person.image_position ? person.image_position as { x: number; y: number; scale: number } : undefined
-        }));
-        setPeople(convertedPeople);
+        const rows = (data ?? []) as unknown as DbPerson[];
+        setPeople(rows.map(convertRowToPerson));
       }
     } catch (error) {
       console.error('Error fetching people:', error);
@@ -95,14 +111,13 @@ export const usePeople = () => {
     if (!user) return null;
 
     try {
-      const { data, error } = await supabase
+      const { data, error } = await client
         .from('people')
         .insert([
           {
             name: personData.name,
             category: personData.category,
             image_url: personData.image_url,
-            user_id: user.id,
             custom_fields: {},
             plans_made: []
           }
@@ -120,12 +135,7 @@ export const usePeople = () => {
         return null;
       }
 
-      const convertedPerson: Person = {
-        ...data,
-        custom_fields: data.custom_fields as Record<string, string> || {},
-        plans_made: convertJsonToPlans(data.plans_made),
-        image_position: data.image_position ? data.image_position as { x: number; y: number; scale: number } : undefined
-      };
+      const convertedPerson: Person = convertRowToPerson(data as unknown as DbPerson);
 
       setPeople(prev => [convertedPerson, ...prev]);
       toast({
@@ -149,7 +159,7 @@ export const usePeople = () => {
         plans_made: updates.plans_made ? convertPlansToJson(updates.plans_made) : undefined
       };
 
-      const { data, error } = await supabase
+      const { data, error } = await client
         .from('people')
         .update(dbUpdates)
         .eq('id', id)
@@ -167,12 +177,7 @@ export const usePeople = () => {
         return null;
       }
 
-      const convertedPerson: Person = {
-        ...data,
-        custom_fields: data.custom_fields as Record<string, string> || {},
-        plans_made: convertJsonToPlans(data.plans_made),
-        image_position: data.image_position ? data.image_position as { x: number; y: number; scale: number } : undefined
-      };
+      const convertedPerson: Person = convertRowToPerson(data as unknown as DbPerson);
 
       setPeople(prev => 
         prev.map(person => person.id === id ? convertedPerson : person)
@@ -192,7 +197,7 @@ export const usePeople = () => {
     if (!user) return false;
 
     try {
-      const { error } = await supabase
+      const { error } = await client
         .from('people')
         .delete()
         .eq('id', id)
