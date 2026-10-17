@@ -75,7 +75,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-40">
+      <header className="frosted border-b border-border/30 sticky top-0 z-40">
         <div className="container mx-auto px-4 md:px-6 py-3 md:py-4 max-w-7xl">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 md:gap-4">
@@ -105,8 +105,8 @@ const Index = () => {
                             className={cn(
                               "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-left group",
                               selectedCategory === category
-                                ? "bg-primary text-primary-foreground shadow-lg"
-                                : "bg-card text-card-foreground hover:bg-secondary"
+                                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                                : "neo-press text-card-foreground hover:text-primary"
                             )}
                           >
                             <Icon size={18} />
@@ -147,8 +147,8 @@ const Index = () => {
             <div className="flex items-center gap-1 md:gap-4">
               <UpcomingDatesDropdown people={people} />
               <div className="flex items-center gap-1 md:gap-3">
-                <div className="w-8 h-8 md:w-9 md:h-9 bg-secondary rounded-xl flex items-center justify-center">
-                  <User size={14} className="md:w-4 md:h-4 text-secondary-foreground" />
+                <div className="w-8 h-8 md:w-9 md:h-9 neo-raised-sm rounded-xl flex items-center justify-center">
+                  <User size={14} className="md:w-4 md:h-4 text-muted-foreground" />
                 </div>
                 <div className="hidden lg:block">
                   <p className="text-sm font-medium text-foreground">{user?.email}</p>
@@ -178,7 +178,7 @@ const Index = () => {
               placeholder="Search people..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-12 h-12 bg-card border-border/50 rounded-xl font-medium placeholder:text-muted-foreground/60"
+              className="pl-12 h-12 rounded-2xl font-medium placeholder:text-muted-foreground/60"
             />
           </div>
         </div>
@@ -196,7 +196,7 @@ const Index = () => {
                   "flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 font-medium group",
                   selectedCategory === category
                     ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                    : "bg-card text-card-foreground hover:bg-secondary border border-border/50"
+                    : "neo-press text-card-foreground hover:text-primary"
                 )}
               >
                 <Icon size={18} />
@@ -228,7 +228,7 @@ const Index = () => {
         {/* Floating Action Button - Mobile */}
         <Button
           onClick={() => setShowAddModal(true)}
-          className="md:hidden fixed bottom-6 right-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl w-16 h-16 shadow-lg hover:shadow-xl flex items-center justify-center z-50 group"
+          className="md:hidden fixed bottom-6 right-6 bg-primary text-primary-foreground rounded-2xl w-16 h-16 shadow-[0_10px_30px_hsl(var(--primary)/0.4)] hover:shadow-[0_12px_36px_hsl(var(--primary)/0.5)] flex items-center justify-center z-50 group"
         >
           <Plus size={24} className="group-hover:rotate-90 transition-transform duration-300" />
         </Button>
@@ -257,7 +257,7 @@ const Index = () => {
         {/* Empty State */}
         {!loading && filteredPeople.length === 0 && (
           <div className="text-center py-20">
-            <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center mx-auto mb-6">
+            <div className="w-20 h-20 neo-inset rounded-3xl flex items-center justify-center mx-auto mb-6">
               <Users size={32} className="text-muted-foreground" />
             </div>
             <h3 className="text-xl font-semibold text-foreground mb-2">

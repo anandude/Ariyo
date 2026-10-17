@@ -120,14 +120,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   return (
     <div className="space-y-4">
-      <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+      <Label className="text-sm font-medium text-foreground flex items-center gap-2">
         <Image size={16} />
         Profile Picture
       </Label>
       
       {currentImageUrl ? (
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200">
+          <div className="w-20 h-20 rounded-full overflow-hidden neo-inset-sm">
             <img 
               src={currentImageUrl} 
               alt="Profile" 
@@ -161,9 +161,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         </div>
       ) : (
         <Label htmlFor="image-upload" className="cursor-pointer">
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-gray-400 transition-colors">
+          <div className="neo-inset rounded-lg p-6 transition-colors">
             <div className="text-center">
-              <Upload className="mx-auto h-12 w-12 text-gray-400" />
+              <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
               <div className="mt-2">
                 <Button
                   variant="outline"
@@ -175,7 +175,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                   </span>
                 </Button>
               </div>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 PNG, JPG, GIF up to 5MB
               </p>
             </div>

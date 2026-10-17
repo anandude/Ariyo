@@ -109,19 +109,19 @@ const UpcomingDatesDropdown: React.FC<UpcomingDatesDropdownProps> = ({ people })
         </div>
         <div className="p-3 space-y-3">
           {allUpcomingEvents.length === 0 ? (
-            <div className="text-center py-6 text-gray-500">
+            <div className="text-center py-6 text-muted-foreground">
               <Clock className="w-8 h-8 mx-auto mb-2 opacity-50" />
               <p className="text-sm">No upcoming events</p>
             </div>
           ) : (
             allUpcomingEvents.map((event, index) => (
-              <div key={index} className="p-3 rounded-lg border bg-gray-50/50 hover:bg-gray-100/50 transition-colors">
+              <div key={index} className="p-3 rounded-lg neo-inset-sm transition-colors">
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div className="flex items-center gap-2 min-w-0">
                     {event.type === 'birthday' ? (
-                      <Gift className="w-4 h-4 text-pink-500 flex-shrink-0" />
+                      <Gift className="w-4 h-4 text-primary flex-shrink-0" />
                     ) : (
-                      <Users className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                      <Users className="w-4 h-4 text-primary/70 flex-shrink-0" />
                     )}
                     <span className="font-medium text-sm truncate">
                       {event.person.name}
@@ -134,7 +134,7 @@ const UpcomingDatesDropdown: React.FC<UpcomingDatesDropdownProps> = ({ people })
                     {getDateLabel(event.date)}
                   </Badge>
                 </div>
-                <p className="text-xs text-gray-600 ml-6">
+                <p className="text-xs text-muted-foreground ml-6">
                   {event.type === 'birthday' 
                     ? 'Birthday' 
                     : `${event.plan.description}${event.plan.time ? ` at ${event.plan.time}` : ''}`
@@ -145,7 +145,7 @@ const UpcomingDatesDropdown: React.FC<UpcomingDatesDropdownProps> = ({ people })
           )}
           
           {(upcomingBirthdays.length > 0 || upcomingPlans.length > 0) && (
-            <div className="pt-2 border-t text-xs text-gray-500 text-center">
+            <div className="pt-2 border-t text-xs text-muted-foreground text-center">
               {upcomingBirthdays.length} birthdays • {upcomingPlans.length} plans
             </div>
           )}

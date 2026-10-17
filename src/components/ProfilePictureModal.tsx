@@ -203,7 +203,7 @@ const ProfilePictureModal: React.FC<ProfilePictureModalProps> = ({
           <div className="flex justify-center">
             <div 
               ref={previewRef}
-              className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200 relative bg-gray-100"
+              className="w-32 h-32 rounded-full overflow-hidden neo-inset relative"
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
@@ -225,7 +225,7 @@ const ProfilePictureModal: React.FC<ProfilePictureModalProps> = ({
                   style={getCurrentImageStyle()}
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-3xl">
+                <div className="w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-3xl">
                   {personName.charAt(0)}
                 </div>
               )}
@@ -234,14 +234,14 @@ const ProfilePictureModal: React.FC<ProfilePictureModalProps> = ({
 
           {/* Positioning Controls - Only shown when uploading new image */}
           {showPositioning && newImageUrl && (
-            <div className="space-y-3 bg-blue-50 p-4 rounded-lg">
+            <div className="space-y-3 neo-inset p-4 rounded-lg">
               <Label className="text-sm font-medium flex items-center gap-2">
                 <Move size={16} />
                 Position Your Image
               </Label>
               <div className="space-y-2">
                 <div>
-                  <Label className="text-xs text-gray-600">Scale: {position.scale.toFixed(2)}</Label>
+                  <Label className="text-xs text-muted-foreground">Scale: {position.scale.toFixed(2)}</Label>
                   <Input
                     type="range"
                     min="0.5"
@@ -262,7 +262,7 @@ const ProfilePictureModal: React.FC<ProfilePictureModalProps> = ({
                   Reset Position
                 </Button>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 Drag the image to reposition it within the circle
               </p>
               <div className="flex gap-2 pt-2">
@@ -275,7 +275,7 @@ const ProfilePictureModal: React.FC<ProfilePictureModalProps> = ({
                 </Button>
                 <Button
                   onClick={saveNewImage}
-                  className="flex-1 bg-blue-500 hover:bg-blue-600"
+                  className="flex-1"
                 >
                   Save
                 </Button>

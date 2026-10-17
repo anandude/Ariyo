@@ -4,89 +4,101 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Modern dark theme with orange/red accents inspired by the reference design */
+/*
+  Ariyo — Neumorphic design system (dark-first)
+  Soft monochrome surfaces with dual shadows: light source top-left
+  (bright ridge) and shadow bottom-right (recessed pit).
+*/
 
 @layer base {
   :root {
-    /* Light mode - minimal and clean */
-    --background: 0 0% 98%; /* Almost white */
-    --foreground: 0 0% 8%; /* Very dark gray, almost black */
+    /* Light mode — warm paper */
+    --background: 30 20% 90%;
+    --foreground: 25 25% 14%;
 
-    --card: 0 0% 100%; /* Pure white */
-    --card-foreground: 0 0% 8%; /* Very dark gray */
+    --card: 30 20% 90%;
+    --card-foreground: 25 25% 14%;
 
-    --popover: 0 0% 100%; /* Pure white */
-    --popover-foreground: 0 0% 8%; /* Very dark gray */
+    --popover: 30 20% 91%;
+    --popover-foreground: 25 25% 14%;
 
-    --primary: 14 100% 57%; /* Orange/red from inspiration */
-    --primary-foreground: 0 0% 98%; /* Almost white */
+    --primary: 14 100% 57%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%; /* Light gray */
-    --secondary-foreground: 0 0% 15%; /* Dark gray */
+    --secondary: 30 18% 86%;
+    --secondary-foreground: 25 25% 22%;
 
-    --muted: 0 0% 95%; /* Very light gray */
-    --muted-foreground: 0 0% 45%; /* Medium gray */
+    --muted: 30 18% 86%;
+    --muted-foreground: 25 15% 40%;
 
-    --accent: 0 0% 95%; /* Very light gray */
-    --accent-foreground: 0 0% 15%; /* Dark gray */
+    --accent: 30 18% 86%;
+    --accent-foreground: 25 25% 22%;
 
-    --destructive: 0 84.2% 60.2%; /* Keep destructive red */
-    --destructive-foreground: 0 0% 98%; /* Almost white */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%; /* Light gray border */
-    --input: 0 0% 90%; /* Light gray input background */
-    --ring: 14 100% 57%; /* Orange/red ring */
+    --border: 30 15% 82%;
+    --input: 30 20% 88%;
+    --ring: 14 100% 57%;
 
-    --radius: 0.75rem;
+    /* Neumorphic shadow palette */
+    --shadow-light: 30 40% 98%;
+    --shadow-dark: 30 20% 74%;
 
-    --sidebar-background: 0 0% 98%; /* Almost white */
-    --sidebar-foreground: 0 0% 8%; /* Very dark gray */
-    --sidebar-primary: 14 100% 57%; /* Orange/red */
-    --sidebar-primary-foreground: 0 0% 98%; /* Almost white */
-    --sidebar-accent: 0 0% 96%; /* Light gray */
-    --sidebar-accent-foreground: 0 0% 15%; /* Dark gray */
-    --sidebar-border: 0 0% 90%; /* Light gray border */
-    --sidebar-ring: 14 100% 57%; /* Orange/red ring */
+    --radius: 1rem;
+
+    --sidebar-background: 30 20% 90%;
+    --sidebar-foreground: 25 25% 14%;
+    --sidebar-primary: 14 100% 57%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 30 18% 86%;
+    --sidebar-accent-foreground: 25 25% 22%;
+    --sidebar-border: 30 15% 82%;
+    --sidebar-ring: 14 100% 57%;
   }
 
   .dark {
-    /* Dark mode - sophisticated dark theme matching inspiration */
-    --background: 0 0% 5%; /* Very dark, almost black */
-    --foreground: 0 0% 95%; /* Almost white */
+    /* Dark mode (default) — soft charcoal */
+    --background: 220 13% 11%;
+    --foreground: 220 15% 92%;
 
-    --card: 0 0% 8%; /* Dark gray */
-    --card-foreground: 0 0% 95%; /* Almost white */
+    --card: 220 13% 11%;
+    --card-foreground: 220 15% 92%;
 
-    --popover: 0 0% 8%; /* Dark gray */
-    --popover-foreground: 0 0% 95%; /* Almost white */
+    --popover: 220 13% 13%;
+    --popover-foreground: 220 15% 92%;
 
-    --primary: 14 100% 57%; /* Orange/red accent */
-    --primary-foreground: 0 0% 5%; /* Very dark */
+    --primary: 14 100% 57%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 12%; /* Slightly lighter dark gray */
-    --secondary-foreground: 0 0% 85%; /* Light gray */
+    --secondary: 220 10% 15%;
+    --secondary-foreground: 220 10% 75%;
 
-    --muted: 0 0% 10%; /* Dark gray */
-    --muted-foreground: 0 0% 60%; /* Medium gray */
+    --muted: 220 10% 15%;
+    --muted-foreground: 220 8% 62%;
 
-    --accent: 0 0% 12%; /* Slightly lighter dark gray */
-    --accent-foreground: 0 0% 85%; /* Light gray */
+    --accent: 220 10% 15%;
+    --accent-foreground: 220 10% 75%;
 
-    --destructive: 0 84.2% 60.2%; /* Keep destructive red */
-    --destructive-foreground: 0 0% 95%; /* Almost white */
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 15%; /* Dark gray border */
-    --input: 0 0% 15%; /* Dark gray input background */
-    --ring: 14 100% 57%; /* Orange/red ring */
-    
-    --sidebar-background: 0 0% 5%; /* Very dark */
-    --sidebar-foreground: 0 0% 95%; /* Almost white */
-    --sidebar-primary: 14 100% 57%; /* Orange/red */
-    --sidebar-primary-foreground: 0 0% 5%; /* Very dark */
-    --sidebar-accent: 0 0% 12%; /* Slightly lighter dark gray */
-    --sidebar-accent-foreground: 0 0% 85%; /* Light gray */
-    --sidebar-border: 0 0% 15%; /* Dark gray border */
-    --sidebar-ring: 14 100% 57%; /* Orange/red ring */
+    --border: 220 10% 18%;
+    --input: 220 12% 13%;
+    --ring: 14 100% 57%;
+
+    /* Neumorphic shadow palette */
+    --shadow-light: 220 13% 16%;
+    --shadow-dark: 220 15% 6%;
+
+    --sidebar-background: 220 13% 11%;
+    --sidebar-foreground: 220 15% 92%;
+    --sidebar-primary: 14 100% 57%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 10% 15%;
+    --sidebar-accent-foreground: 220 10% 75%;
+    --sidebar-border: 220 10% 18%;
+    --sidebar-ring: 14 100% 57%;
   }
 }
 
@@ -104,7 +116,6 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  /* Enhanced typography hierarchy */
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
   }
@@ -126,17 +137,14 @@
     line-height: 1.3;
   }
 
-  /* Better text spacing */
   p {
     @apply leading-relaxed;
   }
 
-  /* Smooth transitions */
   * {
     @apply transition-colors duration-200;
   }
 
-  /* Custom scrollbar for dark theme */
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -151,5 +159,104 @@
 
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-muted-foreground/30;
+  }
+}
+
+@layer utilities {
+  /* ── Neumorphic surfaces ─────────────────────────────── */
+
+  /* Raised: element lifted off the surface */
+  .neo-raised {
+    background: hsl(var(--card));
+    box-shadow:
+      -6px -6px 14px hsl(var(--shadow-light) / 0.9),
+      6px 6px 14px hsl(var(--shadow-dark) / 0.55);
+  }
+
+  /* Raised, small — chips, icon buttons, inputs */
+  .neo-raised-sm {
+    background: hsl(var(--card));
+    box-shadow:
+      -3px -3px 8px hsl(var(--shadow-light) / 0.85),
+      3px 3px 8px hsl(var(--shadow-dark) / 0.5);
+  }
+
+  /* Raised, large — hero panels, feature cards */
+  .neo-raised-lg {
+    background: hsl(var(--card));
+    box-shadow:
+      -14px -14px 30px hsl(var(--shadow-light) / 0.8),
+      14px 14px 30px hsl(var(--shadow-dark) / 0.6);
+  }
+
+  /* Pressed / inset: element carved into the surface */
+  .neo-inset {
+    background: hsl(var(--input));
+    box-shadow:
+      inset 4px 4px 10px hsl(var(--shadow-dark) / 0.5),
+      inset -4px -4px 10px hsl(var(--shadow-light) / 0.7);
+  }
+
+  .neo-inset-sm {
+    background: hsl(var(--input));
+    box-shadow:
+      inset 2px 2px 6px hsl(var(--shadow-dark) / 0.45),
+      inset -2px -2px 6px hsl(var(--shadow-light) / 0.65);
+  }
+
+  /* Pressable raised element: lifts on hover, sinks on press */
+  .neo-press {
+    background: hsl(var(--card));
+    box-shadow:
+      -3px -3px 8px hsl(var(--shadow-light) / 0.85),
+      3px 3px 8px hsl(var(--shadow-dark) / 0.5);
+    transition: box-shadow 0.18s ease, transform 0.18s ease;
+  }
+  .neo-press:hover {
+    box-shadow:
+      -5px -5px 12px hsl(var(--shadow-light) / 0.9),
+      5px 5px 12px hsl(var(--shadow-dark) / 0.6);
+    transform: translateY(-1px);
+  }
+  .neo-press:active {
+    box-shadow:
+      inset 3px 3px 8px hsl(var(--shadow-dark) / 0.5),
+      inset -3px -3px 8px hsl(var(--shadow-light) / 0.7);
+    transform: translateY(0);
+  }
+
+  /* Interactive card that floats on hover */
+  .neo-hover {
+    background: hsl(var(--card));
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .neo-hover:hover {
+    box-shadow:
+      -10px -10px 24px hsl(var(--shadow-light) / 0.9),
+      10px 10px 24px hsl(var(--shadow-dark) / 0.65);
+    transform: translateY(-3px);
+  }
+
+  /* Primary glow accent */
+  .neo-glow-primary {
+    box-shadow:
+      -6px -6px 14px hsl(var(--shadow-light) / 0.8),
+      6px 6px 14px hsl(var(--shadow-dark) / 0.55),
+      0 0 24px hsl(var(--primary) / 0.28);
+  }
+
+  /* Gradient text */
+  .text-gradient-primary {
+    background: linear-gradient(120deg, hsl(var(--primary)), hsl(38 100% 62%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Frosted bar for sticky headers */
+  .frosted {
+    background: hsl(var(--background) / 0.72);
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
   }
 }

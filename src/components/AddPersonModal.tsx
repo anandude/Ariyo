@@ -35,7 +35,7 @@ const AddPersonModal = ({ isOpen, onClose, onAdd }: AddPersonModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-card rounded-2xl border-0 shadow-2xl">
+      <DialogContent className="sm:max-w-md rounded-2xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center text-card-foreground">
             Add New Person
@@ -52,7 +52,7 @@ const AddPersonModal = ({ isOpen, onClose, onAdd }: AddPersonModalProps) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter their name"
-              className="border-border rounded-xl h-12 text-lg"
+              className="h-12 text-lg"
               autoFocus
             />
           </div>
@@ -62,10 +62,10 @@ const AddPersonModal = ({ isOpen, onClose, onAdd }: AddPersonModalProps) => {
               Category
             </Label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="border-border rounded-xl h-12">
+              <SelectTrigger className="h-12">
                 <SelectValue placeholder="Choose a category" />
               </SelectTrigger>
-              <SelectContent className="bg-card border-border rounded-xl">
+              <SelectContent className="rounded-xl">
                 {categories.map((cat) => {
                   const Icon = cat.icon;
                   return (
@@ -86,21 +86,21 @@ const AddPersonModal = ({ isOpen, onClose, onAdd }: AddPersonModalProps) => {
               type="button"
               variant="outline"
               onClick={onClose}
-              className="flex-1 rounded-xl h-12 border-border"
+              className="flex-1 h-12"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={!name.trim() || !category}
-              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-12"
+              className="flex-1 h-12"
             >
               Add Person
             </Button>
           </div>
         </form>
 
-        <div className="text-center text-sm text-gray-500 mt-4">
+        <div className="text-center text-sm text-muted-foreground mt-4">
           You can add more details after creating their profile
         </div>
       </DialogContent>

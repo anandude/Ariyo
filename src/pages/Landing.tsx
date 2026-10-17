@@ -1,9 +1,14 @@
-
+import { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Users, Heart, Calendar, MapPin, ArrowRight, Star, Brain, Shield, Sparkles } from 'lucide-react';
+import Reveal from '@/components/Reveal';
+
+const HeroScene = lazy(() => import('@/components/hero/HeroScene'));
+import {
+  Users, Heart, Calendar, MapPin, ArrowRight, Brain, Shield, Sparkles, Bell, Lock,
+} from 'lucide-react';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -18,33 +23,28 @@ const Landing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
+    <div className="min-h-screen bg-background overflow-x-clip">
+      {/* ── Header ─────────────────────────────────────────── */}
+      <header className="frosted sticky top-0 z-50">
+        <div className="container mx-auto px-6 py-3">
           <nav className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 flex items-center justify-center">
-                <img 
-                  src="/logo/ariyo logo6.png" 
-                  alt="Ariyo Logo" 
-                  className="w-10 h-10 object-contain"
-                />
-              </div>
+              <img
+                src="/logo/ariyo logo6.png"
+                alt="Ariyo Logo"
+                className="w-10 h-10 object-contain"
+              />
               <span className="text-2xl font-bold text-foreground tracking-tight">Ariyo</span>
             </div>
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
                 onClick={() => navigate('/auth')}
                 className="text-muted-foreground hover:text-foreground"
               >
                 Sign in
               </Button>
-              <Button 
-                onClick={handleOpenApp}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300"
-              >
+              <Button onClick={handleOpenApp} className="px-6 font-medium">
                 Get started
               </Button>
             </div>
@@ -52,58 +52,83 @@ const Landing = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
       <main className="relative">
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl"></div>
-        </div>
+        {/* ── Hero ─────────────────────────────────────────── */}
+        <section className="relative">
+          {/* soft radial ambience */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="absolute -top-32 left-1/4 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
+            <div className="absolute top-1/3 right-0 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
+          </div>
 
-        <div className="relative container mx-auto px-6 py-20 lg:py-32">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center space-y-8 mb-20">
-              <div className="space-y-6">
-                <h1 className="text-6xl lg:text-7xl font-bold text-foreground leading-none tracking-tighter">
-                  Remember
-                  <span className="block text-primary">
-                    everyone
-                  </span>
-                  who matters
+          <div className="relative container mx-auto px-6 pt-16 pb-20 lg:pt-24 lg:pb-28">
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8 max-w-6xl mx-auto">
+              {/* Copy */}
+              <div className="text-center lg:text-left space-y-8 animate-fade-in-up">
+                <div className="inline-flex items-center gap-2 rounded-full neo-inset-sm px-4 py-1.5 text-sm text-muted-foreground">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  Your people, remembered
+                </div>
+
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tighter">
+                  Never forget
+                  <span className="block text-gradient-primary">the people</span>
+                  who matter
                 </h1>
-                <p className="text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                  A beautifully crafted app to help you remember names, birthdays, 
-                  and meaningful details about the people in your life.
+
+                <p className="text-lg lg:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                  Ariyo keeps every name, face, birthday, and little detail of
+                  the people in your life — beautifully organized, always at
+                  your fingertips.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+                  <Button
+                    onClick={handleOpenApp}
+                    size="lg"
+                    className="px-8 py-4 text-lg font-medium group"
+                  >
+                    Start remembering
+                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                  <Button
+                    onClick={() => navigate('/auth')}
+                    variant="outline"
+                    size="lg"
+                    className="px-8 py-4 text-lg font-medium"
+                  >
+                    Sign in
+                  </Button>
+                </div>
+
+                <p className="text-sm text-muted-foreground">
+                  Free forever · No credit card required
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button
-                  onClick={handleOpenApp}
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-lg group"
-                >
-                  Start remembering
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
+              {/* 3D scene */}
+              <div className="relative h-[420px] sm:h-[520px] lg:h-[600px]">
+                <Suspense fallback={null}>
+                  <HeroScene className="absolute inset-0" />
+                </Suspense>
               </div>
-
-              <p className="text-sm text-muted-foreground">
-                Free forever • No credit card required
-              </p>
             </div>
+          </div>
+        </section>
 
-            {/* Demo Preview */}
+        {/* ── Demo preview ─────────────────────────────────── */}
+        <section className="relative container mx-auto px-6 pb-24 lg:pb-32">
+          <Reveal>
             <div className="max-w-4xl mx-auto">
-              <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl">
-                <CardContent className="p-8">
+              <Card className="neo-raised-lg overflow-hidden">
+                <CardContent className="p-8 lg:p-10">
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-2xl overflow-hidden">
-                          <img 
-                            src="/Alex_chen.png" 
-                            alt="Alex Chen" 
+                        <div className="w-16 h-16 rounded-2xl overflow-hidden neo-inset-sm">
+                          <img
+                            src="/Alex_chen.png"
+                            alt="Alex Chen"
                             className="w-full h-full object-cover object-top scale-150"
                           />
                         </div>
@@ -115,196 +140,143 @@ const Landing = () => {
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="space-y-4">
                         <div className="flex items-center gap-3 text-muted-foreground">
-                          <Calendar size={16} />
+                          <Calendar size={16} className="text-primary" />
                           <span>Birthday: March 15th</span>
                         </div>
                         <div className="flex items-center gap-3 text-muted-foreground">
-                          <MapPin size={16} />
+                          <MapPin size={16} className="text-primary" />
                           <span>Lives in San Francisco</span>
                         </div>
                         <div className="flex items-center gap-3 text-muted-foreground">
-                          <Heart size={16} />
+                          <Heart size={16} className="text-primary" />
                           <span>Loves photography & travel</span>
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-4">
-                      <div className="bg-muted rounded-xl p-4">
+                      <div className="neo-inset rounded-xl p-4">
                         <p className="text-sm text-muted-foreground italic">
-                          "Met at Sarah's birthday party last year. Works as a UX designer at a startup. 
-                          Always brings amazing homemade sourdough to gatherings. Planning a trip to Japan next month."
+                          "Met at Sarah's birthday party last year. Works as a UX designer at a
+                          startup. Always brings amazing homemade sourdough to gatherings.
+                          Planning a trip to Japan next month."
                         </p>
                       </div>
-                      <div className="flex gap-2">
-                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Photography</div>
-                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Sourdough</div>
-                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Travel</div>
+                      <div className="flex flex-wrap gap-2">
+                        {['Photography', 'Sourdough', 'Travel'].map((tag) => (
+                          <div
+                            key={tag}
+                            className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium"
+                          >
+                            {tag}
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
-          </div>
-        </div>
-      </main>
+          </Reveal>
+        </section>
 
-      {/* Features Section */}
-      <section className="py-20 lg:py-32 bg-muted/30">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
-                Everything you need to stay connected
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Powerful yet simple features designed to help you remember what matters most.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-card/50 backdrop-blur-sm border border-border/50 hover:bg-card/80 transition-all duration-300 group">
-                <CardContent className="p-8">
-                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                    <Brain className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4 text-card-foreground">Smart Organization</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Intelligently categorize people by relationships, context, and importance. 
-                    Never lose track of anyone again.
+        {/* ── Features ─────────────────────────────────────── */}
+        <section className="py-20 lg:py-28">
+          <div className="container mx-auto px-6">
+            <div className="max-w-6xl mx-auto">
+              <Reveal>
+                <div className="text-center mb-14">
+                  <h2 className="text-4xl lg:text-5xl font-bold mb-5 tracking-tight">
+                    Every detail,
+                    <span className="text-gradient-primary"> beautifully kept</span>
+                  </h2>
+                  <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
+                    Thoughtful tools that make remembering people effortless —
+                    from first hello to fiftieth birthday.
                   </p>
-                </CardContent>
-              </Card>
+                </div>
+              </Reveal>
 
-              <Card className="bg-card/50 backdrop-blur-sm border border-border/50 hover:bg-card/80 transition-all duration-300 group">
-                <CardContent className="p-8">
-                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                    <Calendar className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4 text-card-foreground">Important Dates</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Never miss another birthday, anniversary, or special occasion. 
-                    Get gentle reminders when it matters.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card/50 backdrop-blur-sm border border-border/50 hover:bg-card/80 transition-all duration-300 group">
-                <CardContent className="p-8">
-                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                    <Shield className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4 text-card-foreground">Privacy First</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Your personal data stays private and secure. Built with privacy 
-                    by design and complete data ownership.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Social Proof */}
-      {/*
-      <section className="py-20 lg:py-32">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
-                Loved by thousands
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Join people who never forget a meaningful connection.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  name: "Sarah Chen",
-                  role: "Product Manager",
-                  content: "Ariyo completely transformed how I maintain relationships. The interface is beautiful and the features are exactly what I needed.",
-                  avatar: "S"
-                },
-                {
-                  name: "Marcus Johnson",
-                  role: "Sales Director",
-                  content: "Perfect for networking events. I can remember everyone I meet and never have those awkward 'I forgot your name' moments.",
-                  avatar: "M"
-                },
-                {
-                  name: "Elena Rodriguez",
-                  role: "Entrepreneur",
-                  content: "Clean, intuitive, and powerful. Ariyo helps me stay connected with my community in a meaningful way.",
-                  avatar: "E"
-                }
-              ].map((testimonial, i) => (
-                <Card key={i} className="bg-card/50 backdrop-blur-sm border border-border/50">
-                  <CardContent className="p-8">
-                    <div className="flex items-center gap-1 mb-6">
-                      {[...Array(5)].map((_, j) => (
-                        <Star key={j} size={16} className="text-primary fill-primary" />
-                      ))}
-                    </div>
-                    <p className="text-muted-foreground mb-6 leading-relaxed italic">
-                      "{testimonial.content}"
-                    </p>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                        <span className="text-primary-foreground font-semibold">{testimonial.avatar}</span>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-card-foreground">{testimonial.name}</p>
-                        <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-      */}
-
-      {/* CTA Section */}
-      <section className="py-20 lg:py-32 bg-primary/5">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="bg-primary rounded-3xl p-12 lg:p-16 text-primary-foreground relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80"></div>
-              <div className="relative space-y-6">
-                <Sparkles className="w-12 h-12 mx-auto mb-6 opacity-80" />
-                <h2 className="text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
-                  Start remembering today
-                </h2>
-                <p className="text-xl lg:text-2xl mb-8 opacity-90 max-w-2xl mx-auto">
-                  Join thousands of people who never forget a name, birthday, or meaningful moment.
-                </p>
-                <Button
-                  onClick={handleOpenApp}
-                  size="lg"
-                  className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  Get started for free
-                </Button>
+              <div className="grid md:grid-cols-3 gap-8">
+                {[
+                  {
+                    icon: Brain,
+                    title: 'Know them deeply',
+                    body: "Capture how you met, what they love, the little things they mentioned once. Ariyo keeps every detail ready before your next hello.",
+                  },
+                  {
+                    icon: Bell,
+                    title: 'Never miss a moment',
+                    body: "Birthdays, anniversaries, big milestones — Ariyo quietly tracks the dates that matter and nudges you at exactly the right time.",
+                  },
+                  {
+                    icon: Lock,
+                    title: 'Yours alone',
+                    body: "Your people are private by default. Everything stays on your account, encrypted in transit, and never shared or sold.",
+                  },
+                ].map((feature, i) => (
+                  <Reveal key={feature.title} delay={i * 120}>
+                    <Card className="neo-hover h-full border-0">
+                      <CardContent className="p-8">
+                        <div className="w-14 h-14 neo-raised-sm rounded-2xl flex items-center justify-center mb-6">
+                          <feature.icon className="w-7 h-7 text-primary" />
+                        </div>
+                        <h3 className="text-xl font-semibold mb-3 text-card-foreground">
+                          {feature.title}
+                        </h3>
+                        <p className="text-muted-foreground leading-relaxed">{feature.body}</p>
+                      </CardContent>
+                    </Card>
+                  </Reveal>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-border/50">
+        {/* ── CTA ──────────────────────────────────────────── */}
+        <section className="py-20 lg:py-28">
+          <div className="container mx-auto px-6">
+            <Reveal>
+              <div className="max-w-4xl mx-auto">
+                <div className="neo-raised-lg rounded-3xl p-12 lg:p-16 text-center relative overflow-hidden">
+                  <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-96 -translate-x-1/2 rounded-full bg-primary/15 blur-3xl" />
+                  <div className="relative space-y-6">
+                    <Sparkles className="w-12 h-12 mx-auto text-primary" />
+                    <h2 className="text-4xl lg:text-5xl font-bold tracking-tight">
+                      Start remembering today
+                    </h2>
+                    <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
+                      Add your first person in under a minute — and never lose
+                      track of the people who matter.
+                    </p>
+                    <Button
+                      onClick={handleOpenApp}
+                      size="lg"
+                      className="px-8 py-4 text-lg font-semibold"
+                    >
+                      Get started for free
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      </main>
+
+      {/* ── Footer ─────────────────────────────────────────── */}
+      <footer className="py-10 border-t border-border/40">
         <div className="container mx-auto px-6">
-          <div className="text-center text-muted-foreground">
-            <p>&copy; 2024 Ariyo. Crafted with care to help you remember.</p>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <img src="/logo/ariyo logo6.png" alt="" className="w-6 h-6 object-contain" />
+              <span className="font-semibold text-foreground">Ariyo</span>
+            </div>
+            <p>&copy; {new Date().getFullYear()} Ariyo. Crafted with care to help you remember.</p>
           </div>
         </div>
       </footer>

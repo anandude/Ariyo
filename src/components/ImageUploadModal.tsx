@@ -182,7 +182,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
           <div className="flex justify-center">
             <div 
               ref={previewRef}
-              className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200 relative bg-gray-100"
+              className="w-32 h-32 rounded-full overflow-hidden neo-inset relative"
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
@@ -197,7 +197,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
                   draggable={false}
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-3xl">
+                <div className="w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-3xl">
                   {personName.charAt(0)}
                 </div>
               )}
@@ -213,7 +213,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
               </Label>
               <div className="space-y-2">
                 <div>
-                  <Label className="text-xs text-gray-600">Scale: {position.scale.toFixed(2)}</Label>
+                  <Label className="text-xs text-muted-foreground">Scale: {position.scale.toFixed(2)}</Label>
                   <Input
                     type="range"
                     min="0.5"
@@ -234,7 +234,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
                   Reset Position
                 </Button>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 Drag the image to reposition it within the circle
               </p>
             </div>
@@ -285,7 +285,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
             {currentImageUrl && (
               <Button
                 onClick={savePosition}
-                className="flex-1 bg-blue-500 hover:bg-blue-600"
+                className="flex-1"
               >
                 Save
               </Button>

@@ -143,14 +143,14 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
   const Icon = getCategoryIcon(person.category);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary to-muted">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6 max-w-2xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <Button
             onClick={onBack}
             variant="ghost"
-            className="flex items-center gap-2 hover:bg-secondary/50 rounded-xl"
+            className="flex items-center gap-2 rounded-xl"
           >
             <ArrowLeft size={20} />
             Back
@@ -185,12 +185,12 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
         </div>
 
         {/* Profile Header */}
-        <Card className="mb-6 bg-card/80 backdrop-blur-sm border-0 shadow-lg">
+        <Card className="mb-6">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div 
-                className={`w-20 h-20 rounded-full overflow-hidden border-2 border-border transition-colors ${
-                  isEditing ? 'cursor-pointer hover:border-primary' : ''
+                className={`w-20 h-20 rounded-full overflow-hidden neo-inset-sm transition-colors ${
+                  isEditing ? 'cursor-pointer hover:ring-2 hover:ring-primary/60' : ''
                 }`}
                 onClick={() => isEditing && setShowImageModal(true)}
               >
@@ -235,7 +235,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
         </Card>
 
         {/* Basic Information */}
-        <Card className="mb-6 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+        <Card className="mb-6">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               Basic Information
@@ -244,7 +244,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <Calendar size={16} />
                   Birthday
                 </Label>
@@ -256,7 +256,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                     className="mt-1 rounded-xl"
                   />
                 ) : (
-                  <p className="text-gray-600 mt-1 p-3 bg-gray-50 rounded-xl">
+                  <p className="text-muted-foreground mt-1 p-3 neo-inset-sm rounded-xl">
                     {person.birthday ? new Date(person.birthday).toLocaleDateString('en-US', { 
                       weekday: 'long', 
                       year: 'numeric', 
@@ -268,7 +268,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <MapPin size={16} />
                   Location
                 </Label>
@@ -280,14 +280,14 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                     className="mt-1 rounded-xl"
                   />
                 ) : (
-                  <p className="text-gray-600 mt-1 p-3 bg-gray-50 rounded-xl">
+                  <p className="text-muted-foreground mt-1 p-3 neo-inset-sm rounded-xl">
                     {person.location || "Not set"}
                   </p>
                 )}
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <MessageCircle size={16} />
                   How We Met
                 </Label>
@@ -299,7 +299,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                     className="mt-1 rounded-xl"
                   />
                 ) : (
-                  <p className="text-gray-600 mt-1 p-3 bg-gray-50 rounded-xl">
+                  <p className="text-muted-foreground mt-1 p-3 neo-inset-sm rounded-xl">
                     {person.how_we_met || "Not set"}
                   </p>
                 )}
@@ -309,7 +309,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
         </Card>
 
         {/* Plans Made */}
-        <Card className="mb-6 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+        <Card className="mb-6">
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg flex items-center gap-2">
@@ -331,11 +331,11 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
           </CardHeader>
           <CardContent className="space-y-4">
             {(editedPerson.plans_made || []).map((plan) => (
-              <div key={plan.id} className="p-3 bg-gray-50 rounded-xl">
+              <div key={plan.id} className="p-3 neo-inset-sm rounded-xl">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 space-y-2">
                     <div>
-                      <Label className="text-sm font-medium text-gray-700">Plan Description</Label>
+                      <Label className="text-sm font-medium text-foreground">Plan Description</Label>
                       {isEditing ? (
                         <Input
                           value={plan.description}
@@ -348,7 +348,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <Label className="text-sm font-medium text-gray-700">Date</Label>
+                        <Label className="text-sm font-medium text-foreground">Date</Label>
                         {isEditing ? (
                           <Input
                             type="date"
@@ -368,7 +368,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                         )}
                       </div>
                       <div>
-                        <Label className="text-sm font-medium text-gray-700">Time</Label>
+                        <Label className="text-sm font-medium text-foreground">Time</Label>
                         {isEditing ? (
                           <Input
                             type="time"
@@ -399,7 +399,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
             ))}
 
             {showAddPlan && isEditing && (
-              <div className="p-4 bg-blue-50 rounded-xl space-y-3">
+              <div className="p-4 neo-inset rounded-xl space-y-3">
                 <Input
                   value={newPlanDescription}
                   onChange={(e) => setNewPlanDescription(e.target.value)}
@@ -425,7 +425,6 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                   <Button
                     onClick={addPlan}
                     size="sm"
-                    className="bg-blue-500 hover:bg-blue-600 rounded-xl"
                   >
                     Add Plan
                   </Button>
@@ -447,7 +446,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
             )}
 
             {(editedPerson.plans_made || []).length === 0 && !showAddPlan && (
-              <p className="text-gray-500 text-center py-4">
+              <p className="text-muted-foreground text-center py-4">
                 {isEditing ? "Click 'Add Plan' to add upcoming plans" : "No plans made yet"}
               </p>
             )}
@@ -455,7 +454,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
         </Card>
 
         {/* Custom Fields */}
-        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+        <Card className="">
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg">Additional Details</CardTitle>
@@ -476,7 +475,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
             {Object.entries(editedPerson.custom_fields || {}).map(([key, value]) => (
               <div key={key}>
                 <div className="flex items-center justify-between">
-                  <Label className="text-sm font-medium text-gray-700">{key}</Label>
+                  <Label className="text-sm font-medium text-foreground">{key}</Label>
                   {isEditing && (
                     <Button
                       onClick={() => removeCustomField(key)}
@@ -501,13 +500,13 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                     className="mt-1 rounded-xl"
                   />
                 ) : (
-                  <p className="text-gray-600 mt-1 p-3 bg-gray-50 rounded-xl">{value}</p>
+                  <p className="text-muted-foreground mt-1 p-3 neo-inset-sm rounded-xl">{value}</p>
                 )}
               </div>
             ))}
 
             {showAddField && isEditing && (
-              <div className="p-4 bg-blue-50 rounded-xl space-y-3">
+              <div className="p-4 neo-inset rounded-xl space-y-3">
                 <Input
                   value={newFieldKey}
                   onChange={(e) => setNewFieldKey(e.target.value)}
@@ -524,7 +523,6 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
                   <Button
                     onClick={addCustomField}
                     size="sm"
-                    className="bg-blue-500 hover:bg-blue-600 rounded-xl"
                   >
                     Add
                   </Button>
@@ -545,7 +543,7 @@ const PersonProfile = ({ person, onBack, onUpdate }: PersonProfileProps) => {
             )}
 
             {Object.keys(editedPerson.custom_fields || {}).length === 0 && !showAddField && (
-              <p className="text-gray-500 text-center py-4">
+              <p className="text-muted-foreground text-center py-4">
                 {isEditing ? "Click 'Add Field' to add custom details" : "No additional details yet"}
               </p>
             )}

@@ -96,7 +96,7 @@ const Auth = () => {
         {/* Header */}
         <div className="text-center mb-10">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center shadow-lg backdrop-blur-sm">
+            <div className="w-16 h-16 neo-raised rounded-2xl flex items-center justify-center">
               <img 
                 src="/logo/ariyo logo6.png" 
                 alt="Ariyo Logo" 
@@ -111,7 +111,7 @@ const Auth = () => {
         </div>
 
         {/* Auth Card */}
-        <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-xl">
+        <Card className="neo-raised-lg">
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="signin" className="flex items-center gap-2 rounded-lg">
@@ -150,7 +150,7 @@ const Auth = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         onKeyDown={(e) => handleKeyDown(e, 'signin')}
-                        className="pl-12 h-12 rounded-xl border-border/50 font-medium"
+                        className="pl-12 h-12 font-medium"
                         required
                       />
                     </div>
@@ -167,7 +167,7 @@ const Auth = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onKeyDown={(e) => handleKeyDown(e, 'signin')}
-                        className="pl-12 pr-12 h-12 rounded-xl border-border/50 font-medium"
+                        className="pl-12 pr-12 h-12 font-medium"
                         required
                       />
                       <button
@@ -182,7 +182,7 @@ const Auth = () => {
                   
                   <Button
                     type="submit"
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="w-full h-12 font-medium"
                     disabled={loading}
                   >
                     {loading ? 'Signing in...' : 'Sign In'}
@@ -194,14 +194,14 @@ const Auth = () => {
                     <span className="w-full border-t border-border/50" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-3 text-muted-foreground font-medium">Or continue with</span>
+                    <span className="px-3 text-muted-foreground font-medium">Or continue with</span>
                   </div>
                 </div>
 
                 <Button
                   onClick={handleGoogleSignIn}
                   variant="outline"
-                  className="w-full h-12 rounded-xl border-border/50 font-medium"
+                  className="w-full h-12 font-medium"
                   disabled={googleLoading}
                 >
                   {googleLoading ? 'Signing in...' : 'Google'}
@@ -241,7 +241,7 @@ const Auth = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         onKeyDown={(e) => handleKeyDown(e, 'signup')}
-                        className="pl-12 h-12 rounded-xl border-border/50 font-medium"
+                        className="pl-12 h-12 font-medium"
                         required
                       />
                     </div>
@@ -258,7 +258,7 @@ const Auth = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onKeyDown={(e) => handleKeyDown(e, 'signup')}
-                        className="pl-12 pr-12 h-12 rounded-xl border-border/50 font-medium"
+                        className="pl-12 pr-12 h-12 font-medium"
                         required
                       />
                       <button
@@ -273,7 +273,7 @@ const Auth = () => {
                   
                   <Button
                     type="submit"
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="w-full h-12 font-medium"
                     disabled={loading}
                   >
                     {loading ? 'Creating account...' : 'Create Account'}
@@ -285,14 +285,14 @@ const Auth = () => {
                     <span className="w-full border-t border-border/50" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-3 text-muted-foreground font-medium">Or continue with</span>
+                    <span className="px-3 text-muted-foreground font-medium">Or continue with</span>
                   </div>
                 </div>
 
                 <Button
                   onClick={handleGoogleSignIn}
                   variant="outline"
-                  className="w-full h-12 rounded-xl border-border/50 font-medium"
+                  className="w-full h-12 font-medium"
                   disabled={googleLoading}
                 >
                   {googleLoading ? 'Signing in...' : 'Google'}

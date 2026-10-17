@@ -41,7 +41,7 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
   return (
     <Card 
       onClick={onClick}
-      className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 bg-card/80 backdrop-blur-sm border-0 shadow-md"
+      className="cursor-pointer neo-hover hover:scale-[1.03] border-0 h-full"
     >
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
@@ -52,7 +52,7 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
               {person.category}
             </div>
           </div>
-          <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden neo-inset-sm">
             {person.image_url ? (
               <img 
                 src={person.image_url} 
@@ -99,8 +99,8 @@ const PersonCard = ({ person, onClick }: PersonCardProps) => {
         </div>
 
         {Object.keys(person.custom_fields || {}).length > 0 && (
-          <div className="mt-3 pt-3 border-t border-gray-100">
-            <div className="text-xs text-gray-500">
+          <div className="mt-3 pt-3 border-t border-border/40">
+            <div className="text-xs text-muted-foreground">
               +{Object.keys(person.custom_fields || {}).length} more details
             </div>
           </div>
