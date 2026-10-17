@@ -1,16 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
+
+/**
+ * Loads three.js at runtime from the app's own static files (copied into
+ * /public/vendor) rather than as a bundled dependency, so the page renders
+ * even if node_modules install state is inconsistent between environments.
+ * Falls back to a static composition if loading or WebGL is unavailable.
+ */
+let threePromise: Promise<any> | null = null;
+function loadThree(): Promise<any> {
+  if (!threePromise) {
+    threePromise = new Promise((resolve, reject) => {
+      const url = new URL('/vendor/three.module.js', window.location.origin).href;
+      import(/* @vite-ignore */ /* webpackIgnore: true */ url)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+  return threePromise;
+}
 
 interface HeroSceneProps {
   className?: string;
 }
 
 /**
- * Lightweight hand-rolled three.js hero: floating profile cards (rounded
- * quads with an avatar disc and text lines, built from geometry + canvas
- * textures) orbiting a glowing core. No react-three-fiber needed — plain
- * three keeps the bundle and render loop lean.
- * Falls back to a static CSS composition when WebGL is unavailable.
+ * Lightweight three.js hero: floating profile cards (canvas-textured quads)
+ * orbiting a glowing core with thin rings and drifting particles. Mouse
+ * parallax, pauses when hidden/offscreen, honors prefers-reduced-motion.
  */
 const HeroScene = ({ className }: HeroSceneProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -20,171 +36,21 @@ const HeroScene = ({ className }: HeroSceneProps) => {
     const mount = mountRef.current;
     if (!mount) return;
 
-    let renderer: THREE.WebGLRenderer;
-    try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    } catch {
-      setFailed(true);
-      return;
-    }
-
+    let cleanup: (() => void) | undefined;
     let disposed = false;
-    const disposables: { dispose: () => void }[] = [];
 
-    const width = mount.clientWidth || 600;
-    const height = mount.clientHeight || 600;
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(width, height);
-    renderer.setClearColor(0x000000, 0);
-    mount.appendChild(renderer.domElement);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 11);
-
-    // ── Core glow ────────────────────────────────────────────
-    const coreGroup = new THREE.Group();
-
-    const coreTexture = makeCoreTexture();
-    disposables.push(coreTexture);
-    const coreMat = new THREE.SpriteMaterial({
-      map: coreTexture,
-      transparent: true,
-      depthWrite: false,
-    });
-    disposables.push(coreMat);
-    const core = new THREE.Sprite(coreMat);
-    core.scale.set(6.5, 6.5, 1);
-    coreGroup.add(core);
-
-    // Thin torus rings around the core
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('hsl(14, 100%, 57%)'),
-      transparent: true,
-      opacity: 0.55,
-    });
-    disposables.push(ringMat);
-    const ringGeo = new THREE.TorusGeometry(2.2, 0.015, 8, 96);
-    disposables.push(ringGeo);
-    const ring2Geo = new THREE.TorusGeometry(2.9, 0.01, 8, 96);
-    disposables.push(ring2Geo);
-
-    const ring1 = new THREE.Mesh(ringGeo, ringMat);
-    ring1.rotation.x = Math.PI / 2.4;
-    coreGroup.add(ring1);
-    const ring2 = new THREE.Mesh(ring2Geo, ringMat.clone());
-    (ring2.material as THREE.MeshBasicMaterial).opacity = 0.3;
-    ring2.rotation.x = Math.PI / 1.8;
-    ring2.rotation.y = 0.4;
-    coreGroup.add(ring2);
-    disposables.push(ring2.material as THREE.MeshBasicMaterial);
-
-    scene.add(coreGroup);
-
-    // ── Floating profile cards ───────────────────────────────
-    const cards: { group: THREE.Group; baseY: number; phase: number; floatSpeed: number }[] = [];
-    const cardData = [
-      { name: 'Alex Chen', tag: 'Friend', initials: 'AC', hue: 14, pos: [-3.4, 1.6, 1.2] as const, scale: 1.15 },
-      { name: 'Maya Patel', tag: 'Colleague', initials: 'MP', hue: 200, pos: [3.5, 0.9, 0.4] as const, scale: 1.05 },
-      { name: 'Sam Okafor', tag: 'Mentor', initials: 'SO', hue: 38, pos: [-2.6, -1.9, 0.8] as const, scale: 0.9 },
-      { name: 'Lena Ruiz', tag: 'Family', initials: 'LR', hue: 145, pos: [2.9, -1.6, 1.6] as const, scale: 0.95 },
-    ];
-
-    for (const data of cardData) {
-      const { group, texture } = makeProfileCard(data);
-      disposables.push(texture);
-      group.position.set(data.pos[0], data.pos[1], data.pos[2]);
-      group.scale.setScalar(data.scale);
-      group.rotation.y = data.pos[0] > 0 ? -0.35 : 0.35;
-      scene.add(group);
-      cards.push({ group, baseY: data.pos[1], phase: Math.random() * Math.PI * 2, floatSpeed: 0.6 + Math.random() * 0.4 });
-    }
-
-    // Small satellite particles
-    const particleGeo = new THREE.SphereGeometry(0.035, 8, 8);
-    disposables.push(particleGeo);
-    const particleMat = new THREE.MeshBasicMaterial({ color: new THREE.Color('hsl(14, 100%, 65%)'), transparent: true, opacity: 0.7 });
-    disposables.push(particleMat);
-    const particles: THREE.Mesh[] = [];
-    for (let i = 0; i < 26; i++) {
-      const p = new THREE.Mesh(particleGeo, particleMat);
-      const angle = (i / 26) * Math.PI * 2;
-      const radius = 3.4 + Math.random() * 2.4;
-      p.position.set(Math.cos(angle) * radius, (Math.random() - 0.5) * 4.4, Math.sin(angle) * radius - 1);
-      scene.add(p);
-      particles.push(p);
-    }
-
-    // ── Interaction: mouse parallax ──────────────────────────
-    let targetX = 0;
-    let targetY = 0;
-    const onMouseMove = (e: MouseEvent) => {
-      targetX = (e.clientX / window.innerWidth) * 2 - 1;
-      targetY = (e.clientY / window.innerHeight) * 2 - 1;
-    };
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-
-    // ── Pause when tab hidden or scene scrolled away ─────────
-    let visible = true;
-    const observer = new IntersectionObserver(
-      ([entry]) => { visible = entry.isIntersecting; },
-      { threshold: 0 }
-    );
-    observer.observe(mount);
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const clock = new THREE.Clock();
-
-    const tick = () => {
-      if (disposed) return;
-      const raf = requestAnimationFrame(tick);
-      if (!visible || document.hidden) return raf; // skip work, keep loop alive
-
-      const t = clock.getElapsedTime();
-      const speed = prefersReduced ? 0.15 : 1;
-
-      coreGroup.rotation.y += 0.0016 * speed;
-      ring1.rotation.z += 0.004 * speed;
-      ring2.rotation.z -= 0.003 * speed;
-
-      for (const card of cards) {
-        card.group.position.y = card.baseY + Math.sin(t * card.floatSpeed + card.phase) * 0.18 * speed;
-        card.group.rotation.y = (card.group.position.x > 0 ? -0.35 : 0.35) + Math.sin(t * 0.4 + card.phase) * 0.06 * speed;
-      }
-
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].position.y += Math.sin(t * 0.8 + i) * 0.0012 * speed;
-      }
-
-      camera.position.x += (targetX * 0.9 - camera.position.x) * 0.04;
-      camera.position.y += (-targetY * 0.6 - camera.position.y) * 0.04;
-      camera.lookAt(0, 0, 0);
-
-      renderer.render(scene, camera);
-    };
-    tick();
-
-    const onResize = () => {
-      if (!mount) return;
-      const w = mount.clientWidth;
-      const h = mount.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    };
-    window.addEventListener('resize', onResize);
+    loadThree()
+      .then((THREE) => {
+        if (disposed) return;
+        cleanup = initScene(THREE, mount, () => setFailed(true));
+      })
+      .catch(() => {
+        if (!disposed) setFailed(true);
+      });
 
     return () => {
       disposed = true;
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('resize', onResize);
-      observer.disconnect();
-      renderer.dispose();
-      for (const d of disposables) d.dispose();
-      if (renderer.domElement.parentElement === mount) {
-        mount.removeChild(renderer.domElement);
-      }
+      cleanup?.();
     };
   }, []);
 
@@ -193,15 +59,187 @@ const HeroScene = ({ className }: HeroSceneProps) => {
   return (
     <div className={className}>
       <div ref={mountRef} className="w-full h-full" aria-hidden="true" />
-      {/* accessible description of the visual */}
       <p className="sr-only">Animated illustration of profile cards floating around a glowing core.</p>
     </div>
   );
 };
 
-/* ── Helpers ─────────────────────────────────────────────── */
+/* ── Scene construction ──────────────────────────────────── */
 
-function makeProfileCard(data: { name: string; tag: string; initials: string; hue: number }) {
+type Cleanup = () => void;
+
+function initScene(THREE: any, mount: HTMLElement, onFail: () => void): Cleanup {
+  let renderer: any;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  } catch {
+    onFail();
+    return () => {};
+  }
+
+  const disposables: { dispose: () => void }[] = [];
+
+  const width = mount.clientWidth || 600;
+  const height = mount.clientHeight || 600;
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(width, height);
+  renderer.setClearColor(0x000000, 0);
+  mount.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+  camera.position.set(0, 0, 11);
+
+  // ── Core glow ────────────────────────────────────────────
+  const coreGroup = new THREE.Group();
+
+  const coreTexture = makeCoreTexture(THREE);
+  disposables.push(coreTexture);
+  const coreMat = new THREE.SpriteMaterial({
+    map: coreTexture,
+    transparent: true,
+    depthWrite: false,
+  });
+  disposables.push(coreMat);
+  const core = new THREE.Sprite(coreMat);
+  core.scale.set(6.5, 6.5, 1);
+  coreGroup.add(core);
+
+  // Thin torus rings around the core
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: new THREE.Color('hsl(14, 100%, 57%)'),
+    transparent: true,
+    opacity: 0.55,
+  });
+  disposables.push(ringMat);
+  const ringGeo = new THREE.TorusGeometry(2.2, 0.015, 8, 96);
+  disposables.push(ringGeo);
+  const ring2Geo = new THREE.TorusGeometry(2.9, 0.01, 8, 96);
+  disposables.push(ring2Geo);
+
+  const ring1 = new THREE.Mesh(ringGeo, ringMat);
+  ring1.rotation.x = Math.PI / 2.4;
+  coreGroup.add(ring1);
+  const ring2 = new THREE.Mesh(ring2Geo, ringMat.clone());
+  ring2.material.opacity = 0.3;
+  ring2.rotation.x = Math.PI / 1.8;
+  ring2.rotation.y = 0.4;
+  coreGroup.add(ring2);
+  disposables.push(ring2.material);
+
+  scene.add(coreGroup);
+
+  // ── Floating profile cards ───────────────────────────────
+  const cards: { group: any; baseY: number; phase: number; floatSpeed: number }[] = [];
+  const cardData = [
+    { name: 'Alex Chen', tag: 'Friend', initials: 'AC', hue: 14, pos: [-3.4, 1.6, 1.2], scale: 1.15 },
+    { name: 'Maya Patel', tag: 'Colleague', initials: 'MP', hue: 200, pos: [3.5, 0.9, 0.4], scale: 1.05 },
+    { name: 'Sam Okafor', tag: 'Mentor', initials: 'SO', hue: 38, pos: [-2.6, -1.9, 0.8], scale: 0.9 },
+    { name: 'Lena Ruiz', tag: 'Family', initials: 'LR', hue: 145, pos: [2.9, -1.6, 1.6], scale: 0.95 },
+  ];
+
+  for (const data of cardData) {
+    const { group, texture } = makeProfileCard(THREE, data);
+    disposables.push(texture);
+    group.position.set(data.pos[0], data.pos[1], data.pos[2]);
+    group.scale.setScalar(data.scale);
+    group.rotation.y = data.pos[0] > 0 ? -0.35 : 0.35;
+    scene.add(group);
+    cards.push({ group, baseY: data.pos[1], phase: Math.random() * Math.PI * 2, floatSpeed: 0.6 + Math.random() * 0.4 });
+  }
+
+  // Small satellite particles
+  const particleGeo = new THREE.SphereGeometry(0.035, 8, 8);
+  disposables.push(particleGeo);
+  const particleMat = new THREE.MeshBasicMaterial({ color: new THREE.Color('hsl(14, 100%, 65%)'), transparent: true, opacity: 0.7 });
+  disposables.push(particleMat);
+  const particles: any[] = [];
+  for (let i = 0; i < 26; i++) {
+    const p = new THREE.Mesh(particleGeo, particleMat);
+    const angle = (i / 26) * Math.PI * 2;
+    const radius = 3.4 + Math.random() * 2.4;
+    p.position.set(Math.cos(angle) * radius, (Math.random() - 0.5) * 4.4, Math.sin(angle) * radius - 1);
+    scene.add(p);
+    particles.push(p);
+  }
+
+  // ── Interaction: mouse parallax ──────────────────────────
+  let targetX = 0;
+  let targetY = 0;
+  const onMouseMove = (e: MouseEvent) => {
+    targetX = (e.clientX / window.innerWidth) * 2 - 1;
+    targetY = (e.clientY / window.innerHeight) * 2 - 1;
+  };
+  window.addEventListener('mousemove', onMouseMove, { passive: true });
+
+  // ── Pause when tab hidden or scene scrolled away ─────────
+  let visible = true;
+  const observer = new IntersectionObserver(
+    ([entry]) => { visible = entry.isIntersecting; },
+    { threshold: 0 }
+  );
+  observer.observe(mount);
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clock = new THREE.Clock();
+  let disposed = false;
+
+  const tick = () => {
+    if (disposed) return;
+    requestAnimationFrame(tick);
+    if (!visible || document.hidden) return; // skip work, keep loop alive
+
+    const t = clock.getElapsedTime();
+    const speed = prefersReduced ? 0.15 : 1;
+
+    coreGroup.rotation.y += 0.0016 * speed;
+    ring1.rotation.z += 0.004 * speed;
+    ring2.rotation.z -= 0.003 * speed;
+
+    for (const card of cards) {
+      card.group.position.y = card.baseY + Math.sin(t * card.floatSpeed + card.phase) * 0.18 * speed;
+      card.group.rotation.y = (card.group.position.x > 0 ? -0.35 : 0.35) + Math.sin(t * 0.4 + card.phase) * 0.06 * speed;
+    }
+
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].position.y += Math.sin(t * 0.8 + i) * 0.0012 * speed;
+    }
+
+    camera.position.x += (targetX * 0.9 - camera.position.x) * 0.04;
+    camera.position.y += (-targetY * 0.6 - camera.position.y) * 0.04;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  };
+  tick();
+
+  const onResize = () => {
+    const w = mount.clientWidth;
+    const h = mount.clientHeight;
+    if (!w || !h) return;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  };
+  window.addEventListener('resize', onResize);
+
+  return () => {
+    disposed = true;
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('resize', onResize);
+    observer.disconnect();
+    renderer.dispose();
+    for (const d of disposables) d.dispose();
+    if (renderer.domElement.parentElement === mount) {
+      mount.removeChild(renderer.domElement);
+    }
+  };
+}
+
+/* ── Texture builders ────────────────────────────────────── */
+
+function makeProfileCard(THREE: any, data: { name: string; tag: string; initials: string; hue: number }) {
   const group = new THREE.Group();
 
   const canvas = document.createElement('canvas');
@@ -263,7 +301,7 @@ function makeProfileCard(data: { name: string; tag: string; initials: string; hu
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.anisotropy = 4;
-  if ('colorSpace' in texture) (texture as any).colorSpace = (THREE as any).SRGBColorSpace;
+  if ('colorSpace' in texture) texture.colorSpace = THREE.SRGBColorSpace;
 
   const geo = new THREE.PlaneGeometry(2.1, 2.625);
   const mat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
@@ -282,7 +320,7 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
   ctx.closePath();
 }
 
-function makeCoreTexture() {
+function makeCoreTexture(THREE: any) {
   const canvas = document.createElement('canvas');
   canvas.width = 256;
   canvas.height = 256;
@@ -293,11 +331,10 @@ function makeCoreTexture() {
   g.addColorStop(1, 'rgba(255, 122, 61, 0)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, 256, 256);
-  const texture = new THREE.CanvasTexture(canvas);
-  return texture;
+  return new THREE.CanvasTexture(canvas);
 }
 
-/* ── Static fallback (no WebGL) ──────────────────────────── */
+/* ── Static fallback (no WebGL / load failure) ───────────── */
 
 const StaticFallback = ({ className }: { className?: string }) => (
   <div className={`relative w-full h-full flex items-center justify-center ${className ?? ''}`} aria-hidden="true">
