@@ -22,7 +22,8 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
-				mono: ['JetBrains Mono', 'Monaco', 'Cascadia Code', 'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New', 'monospace'],
+				display: ['Fraunces', 'Georgia', 'serif'],
+				mono: ['JetBrains Mono', 'Monaco', 'Cascadia Code', 'monospace'],
 			},
 			fontSize: {
 				'xs': ['0.75rem', { lineHeight: '1rem' }],
@@ -157,12 +158,12 @@ export default {
 						transform: 'translateX(0)'
 					}
 				},
-				'hero-card-bob': {
-					'0%, 100%': {
-						transform: 'translateY(0)'
+				'marquee': {
+					'0%': {
+						transform: 'translateX(0)'
 					},
-					'50%': {
-						transform: 'translateY(-12px)'
+					'100%': {
+						transform: 'translateX(-50%)'
 					}
 				}
 			},
@@ -172,7 +173,7 @@ export default {
 				'fade-in': 'fade-in 0.3s ease-out',
 				'fade-in-up': 'fade-in-up 0.5s ease-out',
 				'slide-in': 'slide-in 0.3s ease-out',
-				'hero-card-bob': 'hero-card-bob var(--bob-duration, 8s) ease-in-out var(--bob-delay, 0s) infinite'
+				'marquee': 'marquee 40s linear infinite'
 			}
 		}
 	},
