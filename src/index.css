@@ -109,6 +109,7 @@
 
   html {
     @apply dark; /* Default to dark theme */
+    color-scheme: dark light;
   }
 
   body {

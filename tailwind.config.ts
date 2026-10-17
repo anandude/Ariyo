@@ -156,6 +156,14 @@ export default {
 						opacity: '1',
 						transform: 'translateX(0)'
 					}
+				},
+				'hero-card-bob': {
+					'0%, 100%': {
+						transform: 'translateY(0)'
+					},
+					'50%': {
+						transform: 'translateY(-12px)'
+					}
 				}
 			},
 			animation: {
@@ -163,7 +171,8 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
 				'fade-in-up': 'fade-in-up 0.5s ease-out',
-				'slide-in': 'slide-in 0.3s ease-out'
+				'slide-in': 'slide-in 0.3s ease-out',
+				'hero-card-bob': 'hero-card-bob var(--bob-duration, 8s) ease-in-out var(--bob-delay, 0s) infinite'
 			}
 		}
 	},

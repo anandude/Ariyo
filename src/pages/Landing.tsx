@@ -1,11 +1,10 @@
-import { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Reveal from '@/components/Reveal';
-
-const HeroScene = lazy(() => import('@/components/hero/HeroScene'));
+import SilkWaves from '@/components/hero/SilkWaves';
+import FloatingCards from '@/components/hero/FloatingCards';
 import {
   Users, Heart, Calendar, MapPin, ArrowRight, Brain, Shield, Sparkles, Bell, Lock,
 } from 'lucide-react';
@@ -54,12 +53,11 @@ const Landing = () => {
 
       <main className="relative">
         {/* ── Hero ─────────────────────────────────────────── */}
-        <section className="relative">
-          {/* soft radial ambience */}
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute -top-32 left-1/4 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
-            <div className="absolute top-1/3 right-0 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
-          </div>
+        <section className="relative overflow-hidden">
+          {/* silk shader backdrop */}
+          <SilkWaves className="absolute inset-0 w-full h-full" speed={1} opacity={0.9} />
+          {/* fade to page background at the bottom */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
 
           <div className="relative container mx-auto px-6 pt-16 pb-20 lg:pt-24 lg:pb-28">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8 max-w-6xl mx-auto">
@@ -70,16 +68,16 @@ const Landing = () => {
                   Your people, remembered
                 </div>
 
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tighter">
-                  Never forget
-                  <span className="block text-gradient-primary">the people</span>
-                  who matter
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.02] tracking-tighter text-foreground">
+                  Every person,
+                  <span className="block text-gradient-primary drop-shadow-[0_2px_24px_hsl(var(--primary)/0.35)]">
+                    perfectly remembered
+                  </span>
                 </h1>
 
-                <p className="text-lg lg:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                  Ariyo keeps every name, face, birthday, and little detail of
-                  the people in your life — beautifully organized, always at
-                  your fingertips.
+                <p className="text-lg lg:text-xl text-foreground/70 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                  Names, faces, birthdays, the story of how you met — Ariyo keeps
+                  the people in your life close, so no detail ever slips away.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
@@ -95,22 +93,20 @@ const Landing = () => {
                     onClick={() => navigate('/auth')}
                     variant="outline"
                     size="lg"
-                    className="px-8 py-4 text-lg font-medium"
+                    className="px-8 py-4 text-lg font-medium frosted"
                   >
                     Sign in
                   </Button>
                 </div>
 
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-foreground/60">
                   Free forever · No credit card required
                 </p>
               </div>
 
-              {/* 3D scene */}
+              {/* floating profile cards over the silk */}
               <div className="relative h-[420px] sm:h-[520px] lg:h-[600px]">
-                <Suspense fallback={null}>
-                  <HeroScene className="absolute inset-0" />
-                </Suspense>
+                <FloatingCards className="absolute inset-0" />
               </div>
             </div>
           </div>
