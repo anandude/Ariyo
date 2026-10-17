@@ -12,24 +12,24 @@ interface CardPerson {
   /** position in % of container */
   x: number;
   y: number;
-  z: number; // depth: higher = closer
-  rotate: number;
   scale: number;
+  rotate: number;
   duration: number;
   delay: number;
+  birthday?: boolean;
 }
 
 const PEOPLE: CardPerson[] = [
-  { name: 'Alex Chen', tag: 'Friend', initials: 'AC', hue: 14, x: 12, y: 18, z: 60, rotate: -8, scale: 1.1, duration: 7, delay: 0 },
-  { name: 'Maya Patel', tag: 'Colleague', initials: 'MP', hue: 200, x: 74, y: 12, z: 40, rotate: 6, scale: 0.95, duration: 8.5, delay: 1.2 },
-  { name: 'Sam Okafor', tag: 'Mentor', initials: 'SO', hue: 38, x: 8, y: 66, z: 30, rotate: 7, scale: 0.85, duration: 9, delay: 0.6 },
-  { name: 'Lena Ruiz', tag: 'Family', initials: 'LR', hue: 145, x: 78, y: 62, z: 70, rotate: -6, scale: 1.05, duration: 7.5, delay: 2 },
+  { name: 'Alex Chen', tag: 'Friend', initials: 'AC', hue: 14, x: 26, y: 26, scale: 1.12, rotate: -6, duration: 7, delay: 0, birthday: true },
+  { name: 'Maya Patel', tag: 'Colleague', initials: 'MP', hue: 200, x: 80, y: 20, scale: 0.98, rotate: 5, duration: 8.5, delay: 1.2 },
+  { name: 'Sam Okafor', tag: 'Mentor', initials: 'SO', hue: 38, x: 18, y: 74, scale: 0.9, rotate: 6, duration: 9, delay: 0.6 },
+  { name: 'Lena Ruiz', tag: 'Family', initials: 'LR', hue: 145, x: 82, y: 72, scale: 1.05, rotate: -5, duration: 7.5, delay: 2, birthday: true },
 ];
 
 /**
- * CSS-3D floating profile cards over the silk shader. Depth via translateZ,
- * gentle per-card bobbing, shared mouse-parallax tilt. Pure CSS/DOM — no
- * WebGL dependency, honors prefers-reduced-motion.
+ * Floating neumorphic profile cards over the carved circular panel.
+ * Gentle per-card bobbing plus a soft mouse parallax. Pure CSS — honors
+ * prefers-reduced-motion.
  */
 const FloatingCards = ({ className }: FloatingCardsProps) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -60,48 +60,25 @@ const FloatingCards = ({ className }: FloatingCardsProps) => {
     <div
       ref={ref}
       className={className}
-      style={{ perspective: '1000px' }}
+      style={{
+        transform: `translate(${tilt.x * 10}px, ${tilt.y * 8}px)`,
+        transition: 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
+      }}
       aria-hidden="true"
     >
-      <div
-        className="relative w-full h-full"
-        style={{
-          transformStyle: 'preserve-3d',
-          transform: `rotateY(${tilt.x * 6}deg) rotateX(${-tilt.y * 4}deg)`,
-          transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
-        }}
-      >
-        {PEOPLE.map((p) => (
-          <div
-            key={p.name}
-            className="absolute"
-            style={{
-              left: `${p.x}%`,
-              top: `${p.y}%`,
-              transform: `translateZ(${p.z}px) translate(-50%, -50%) scale(${p.scale})`,
-            }}
-          >
-            <PersonChip person={p} reduced={reduced} tilt={tilt} />
-          </div>
-        ))}
-
-        {/* soft depth dots */}
-        {[...Array(8)].map((_, i) => (
-          <span
-            key={i}
-            className="absolute rounded-full bg-primary/40"
-            style={{
-              width: 4 + (i % 3) * 2,
-              height: 4 + (i % 3) * 2,
-              left: `${(i * 37 + 11) % 92}%`,
-              top: `${(i * 53 + 19) % 88}%`,
-              transform: `translateZ(${-40 - i * 12}px)`,
-              filter: 'blur(1px)',
-              opacity: 0.5,
-            }}
-          />
-        ))}
-      </div>
+      {PEOPLE.map((p) => (
+        <div
+          key={p.name}
+          className="absolute"
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            transform: `translate(-50%, -50%) scale(${p.scale})`,
+          }}
+        >
+          <PersonChip person={p} reduced={reduced} tilt={tilt} />
+        </div>
+      ))}
     </div>
   );
 };
@@ -116,7 +93,7 @@ const PersonChip = ({
   tilt: { x: number; y: number };
 }) => {
   const style: CSSProperties = {
-    transform: `rotate(${p.rotate + tilt.x * 2}deg)`,
+    transform: `rotate(${p.rotate + tilt.x * 1.5}deg)`,
     animation: reduced
       ? undefined
       : `hero-card-bob ${p.duration}s ease-in-out ${p.delay}s infinite`,
@@ -124,7 +101,7 @@ const PersonChip = ({
 
   return (
     <div
-      className="absolute neo-raised-lg rounded-2xl px-4 py-3 sm:px-5 sm:py-4 backdrop-blur-sm"
+      className="neo-raised-lg rounded-2xl px-4 py-3 sm:px-5 sm:py-4"
       style={style}
     >
       <div className="flex items-center gap-3">
@@ -138,14 +115,15 @@ const PersonChip = ({
           {p.initials}
         </div>
         <div>
-          <p className="text-sm sm:text-base font-semibold text-foreground leading-tight whitespace-nowrap">{p.name}</p>
+          <p className="text-sm sm:text-base font-semibold text-foreground leading-tight whitespace-nowrap">
+            {p.name}
+          </p>
           <p className="text-xs text-muted-foreground whitespace-nowrap">{p.tag}</p>
         </div>
       </div>
-      {/* birthday pill on some cards */}
-      {(p.tag === 'Friend' || p.tag === 'Family') && (
+      {p.birthday && (
         <div className="mt-2.5 flex items-center gap-1.5 text-xs text-primary">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary" />
           Birthday this week
         </div>
       )}

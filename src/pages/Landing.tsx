@@ -3,7 +3,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Reveal from '@/components/Reveal';
-import SilkWaves from '@/components/hero/SilkWaves';
 import FloatingCards from '@/components/hero/FloatingCards';
 import {
   Users, Heart, Calendar, MapPin, ArrowRight, Brain, Shield, Sparkles, Bell, Lock,
@@ -54,10 +53,21 @@ const Landing = () => {
       <main className="relative">
         {/* ── Hero ─────────────────────────────────────────── */}
         <section className="relative overflow-hidden">
-          {/* silk shader backdrop */}
-          <SilkWaves className="absolute inset-0 w-full h-full" speed={1} opacity={0.9} />
-          {/* fade to page background at the bottom */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
+          {/* carved neumorphic backdrop: giant soft circle + corner glows */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full neo-raised opacity-40" />
+            <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-primary/10 blur-3xl" />
+            <div className="absolute -bottom-40 -left-40 h-[400px] w-[400px] rounded-full bg-primary/5 blur-3xl" />
+          </div>
+
+          {/* carved concentric rings behind the cards */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden lg:flex items-center w-1/2 justify-center">
+            <div className="relative w-[560px] h-[560px]">
+              <div className="absolute inset-0 rounded-full neo-inset" />
+              <div className="absolute inset-16 rounded-full neo-raised" />
+              <div className="absolute inset-32 rounded-full neo-inset" />
+            </div>
+          </div>
 
           <div className="relative container mx-auto px-6 pt-16 pb-20 lg:pt-24 lg:pb-28">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8 max-w-6xl mx-auto">
@@ -70,12 +80,12 @@ const Landing = () => {
 
                 <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.02] tracking-tighter text-foreground">
                   Every person,
-                  <span className="block text-gradient-primary drop-shadow-[0_2px_24px_hsl(var(--primary)/0.35)]">
+                  <span className="block text-gradient-primary">
                     perfectly remembered
                   </span>
                 </h1>
 
-                <p className="text-lg lg:text-xl text-foreground/70 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                <p className="text-lg lg:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
                   Names, faces, birthdays, the story of how you met — Ariyo keeps
                   the people in your life close, so no detail ever slips away.
                 </p>
@@ -93,18 +103,18 @@ const Landing = () => {
                     onClick={() => navigate('/auth')}
                     variant="outline"
                     size="lg"
-                    className="px-8 py-4 text-lg font-medium frosted"
+                    className="px-8 py-4 text-lg font-medium"
                   >
                     Sign in
                   </Button>
                 </div>
 
-                <p className="text-sm text-foreground/60">
+                <p className="text-sm text-muted-foreground">
                   Free forever · No credit card required
                 </p>
               </div>
 
-              {/* floating profile cards over the silk */}
+              {/* floating profile cards over carved rings */}
               <div className="relative h-[420px] sm:h-[520px] lg:h-[600px]">
                 <FloatingCards className="absolute inset-0" />
               </div>
