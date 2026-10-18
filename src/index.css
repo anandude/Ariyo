@@ -1,96 +1,93 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /*
-  Ariyo — Warm editorial design system.
-  Fraunces (serif display) + Inter. Warm ink dark theme, amber accent.
+  Ariyo — Liquid glass design system.
+  Pure black canvas, Instrument Serif display, frosted glass surfaces.
 */
 
 @layer base {
   :root {
-    /* Light mode — warm paper */
-    --background: 38 33% 96%;
-    --foreground: 24 20% 12%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 24 20% 12%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 24 20% 12%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 24 80% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 38 25% 91%;
-    --secondary-foreground: 24 20% 20%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 38 25% 91%;
-    --muted-foreground: 24 10% 42%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 38 25% 91%;
-    --accent-foreground: 24 20% 20%;
+    --accent: 0 0% 10%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 45%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 28 18% 85%;
-    --input: 0 0% 100%;
-    --ring: 24 80% 50%;
+    --border: 0 0% 100% / 0.1;
+    --input: 0 0% 8%;
+    --ring: 0 0% 100%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    --sidebar-background: 38 33% 96%;
-    --sidebar-foreground: 24 20% 12%;
-    --sidebar-primary: 24 80% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 38 25% 91%;
-    --sidebar-accent-foreground: 24 20% 20%;
-    --sidebar-border: 28 18% 85%;
-    --sidebar-ring: 24 80% 50%;
+    --sidebar-background: 0 0% 0%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 0 0% 100%;
   }
 
   .dark {
-    /* Dark (default) — warm ink */
-    --background: 24 14% 8%;
-    --foreground: 36 33% 93%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: 24 13% 11%;
-    --card-foreground: 36 33% 93%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 24 13% 12%;
-    --popover-foreground: 36 33% 93%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 29 91% 56%;
-    --primary-foreground: 24 25% 8%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 24 10% 15%;
-    --secondary-foreground: 36 20% 85%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 24 10% 15%;
-    --muted-foreground: 34 12% 62%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 24 10% 15%;
-    --accent-foreground: 36 20% 85%;
+    --accent: 0 0% 10%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 68% 55%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 24 10% 17%;
-    --input: 24 11% 14%;
-    --ring: 29 91% 56%;
+    --border: 0 0% 100% / 0.1;
+    --input: 0 0% 8%;
+    --ring: 0 0% 100%;
 
-    --sidebar-background: 24 14% 8%;
-    --sidebar-foreground: 36 33% 93%;
-    --sidebar-primary: 29 91% 56%;
-    --sidebar-primary-foreground: 24 25% 8%;
-    --sidebar-accent: 24 10% 15%;
-    --sidebar-foreground: 36 33% 93%;
-    --sidebar-accent-foreground: 36 20% 85%;
-    --sidebar-border: 24 10% 17%;
-    --sidebar-ring: 29 91% 56%;
+    --sidebar-background: 0 0% 0%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 0 0% 100%;
   }
 }
 
@@ -100,16 +97,16 @@
   }
 
   html {
-    color-scheme: dark light;
+    color-scheme: dark;
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
     text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3 {
-    @apply font-display;
+    @apply font-serif;
     text-wrap: balance;
   }
 
@@ -120,21 +117,55 @@
     @apply bg-transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground/20 rounded-full;
+    @apply bg-white/15 rounded-full;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/30;
+    @apply bg-white/25;
   }
 
   ::selection {
-    background: hsl(var(--primary) / 0.85);
-    color: hsl(var(--primary-foreground));
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+  }
+}
+
+@layer components {
+  .liquid-glass {
+    background: rgba(255, 255, 255, 0.01);
+    background-blend-mode: luminosity;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: none;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.4px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.15) 80%,
+      rgba(255, 255, 255, 0.45) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }
 
 @layer utilities {
   .text-gradient-primary {
-    background: linear-gradient(100deg, hsl(var(--primary)), hsl(38 95% 60%));
+    background: linear-gradient(100deg, #fff, rgba(255, 255, 255, 0.55));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -142,51 +173,36 @@
 
   /*
     Legacy surface tokens — the app interior still references these class
-    names. They now resolve to the editorial system: flat warm surfaces with
-    hairline borders and soft ambient depth.
+    names. They now resolve to the black glass system.
   */
   .neo-raised,
   .neo-raised-sm,
   .neo-raised-lg,
   .neo-hover,
   .neo-press {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border) / 0.7);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
   .neo-inset,
   .neo-inset-sm {
-    background: hsl(var(--muted));
-    border: 1px solid hsl(var(--border) / 0.5);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.07);
   }
   .neo-hover {
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
   .neo-hover:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 32px hsl(24 30% 4% / 0.35);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
   }
   .neo-press:active {
     transform: scale(0.99);
   }
 
-  .frosted {
-    background: hsl(var(--background) / 0.8);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-
-  /* Glass surface for header on scroll */
+  .frosted,
   .glass {
-    background: hsl(var(--background) / 0.8);
+    background: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-  }
-
-  /* Fine dotted texture for hero depth */
-  .dot-grid {
-    background-image: radial-gradient(hsl(var(--foreground) / 0.08) 1px, transparent 1px);
-    background-size: 24px 24px;
-    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 75%);
   }
 }

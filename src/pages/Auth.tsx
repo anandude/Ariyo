@@ -104,14 +104,14 @@ const Auth = () => {
               />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-3 tracking-tight">Welcome to Ariyo</h1>
+          <h1 className="font-serif text-4xl text-white mb-3 tracking-tight">Welcome to Ariyo</h1>
           <p className="text-muted-foreground leading-relaxed">
             Sign in to start remembering the special people in your life
           </p>
         </div>
 
         {/* Auth Card */}
-        <Card className="neo-raised-lg">
+        <Card className="liquid-glass rounded-3xl border-none">
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="signin" className="flex items-center gap-2 rounded-lg">

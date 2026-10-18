@@ -22,7 +22,8 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
-				display: ['Fraunces', 'Georgia', 'serif'],
+				display: ['Instrument Serif', 'Georgia', 'serif'],
+				serif: ['Instrument Serif', 'Georgia', 'serif'],
 				mono: ['JetBrains Mono', 'Monaco', 'Cascadia Code', 'monospace'],
 			},
 			fontSize: {
