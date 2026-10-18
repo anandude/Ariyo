@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Globe, Instagram, Twitter, ArrowRight, Heart } from 'lucide-react';
+import { Globe, Instagram, Twitter, ArrowRight } from 'lucide-react';
 import HeroVideo from '@/components/landing/HeroVideo';
 import AboutSection from '@/components/landing/AboutSection';
 import FeaturedVideoSection from '@/components/landing/FeaturedVideoSection';
@@ -26,7 +26,7 @@ const Landing = () => {
         <nav className="relative z-20 px-6 py-6">
           <div className="liquid-glass rounded-full max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Heart className="w-6 h-6 text-white" aria-hidden="true" />
+              <img src="/logo/ariyo logo6.png" alt="Ariyo logo" className="w-7 h-7 object-contain" />
               <span className="text-white font-semibold text-lg">Ariyo</span>
               <div className="hidden md:flex items-center gap-8 ml-8">
                 <a href="#about" className="text-white/80 hover:text-white text-sm font-medium transition-colors">About</a>
@@ -138,7 +138,7 @@ const Landing = () => {
       <footer className="bg-black border-t border-white/10 py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <Heart className="w-5 h-5 text-white" aria-hidden="true" />
+            <img src="/logo/ariyo logo6.png" alt="Ariyo logo" className="w-6 h-6 object-contain" />
             <span className="font-serif text-xl text-white">Ariyo</span>
           </div>
           <p className="text-white/40 text-sm text-center sm:text-right">
